@@ -8,7 +8,7 @@ Audyt: [../audyt1/AUDYT_FAZY0.md](../audyt1/AUDYT_FAZY0.md) (kopia z sumami SHA-
 ## 1. Punkt wyjścia
 - `HEAD` przed korektą = audytowany commit `2fcc5f76fc171a6f7b10b5e5333ebd11df16c226`; drzewo
   czyste; `origin/main` identyczny; różnica względem wersji audytowanej: 0 linii.
-- Korekta na gałęzi `task/faza0-korekta1` (DEVELOPMENT.md §7). `main` i `origin` bez zmian; brak push.
+- Korekta na gałęzi `task/faza0-korekta1` (DEVELOPMENT.md §7). `main` i `origin/main` bez zmian; gałąź wypchnięta na polecenie użytkownika po zakończeniu korekty (§8).
 - Środowisko: Windows 11 x64, Python 3.14.5, pip 26.2.2, zależności zgodne z `requirements-dev.lock`
   (`command_logs/01_environment.txt`).
 
@@ -103,11 +103,11 @@ Ponadto: zakres FAZY 1 (OQ-07) i zmienna systemowa `PYTHONOPTIMIZE` (OQ-13).
 - Zweryfikowany commit (kod, testy, dokumentacja korekty): **`08c6683e89344f0a773e71073cef7f8f8ea1beaa`** (`08c6683`) na gałęzi
   `task/faza0-korekta1`, utworzonej z `main` = `2fcc5f7` (commit audytowany). Na nim wykonano
   odtworzenie w czystym klonie.
-- Kolejny commit zawiera wyłącznie uzupełnienie wyników odtworzenia i identyfikatora commita w
+- Kolejne commity zawierają wyłącznie dokumentację: wyniki odtworzenia, identyfikator commita i stan push w
   `docs/PROJECT_STATE.md` i `reports/phase0/korekta1/` (bez zmian kodu, testów, konfiguracji);
   sprawdzenie: `git diff --stat 08c6683 HEAD`.
-- `main` i `origin/main` pozostają na `2fcc5f7`. **Nie wykonano `git push`** ani scalenia do `main`
-  — oba wymagają polecenia użytkownika (zlecenie korekty).
+- `main` i `origin/main` pozostają na `2fcc5f7`. Gałąź `task/faza0-korekta1` wypchnięta na `origin` 2026-10-22 na polecenie użytkownika;
+  **bez scalania do `main`** — scalenie wymaga polecenia użytkownika (zlecenie korekty).
 - Porównanie z wersją audytowaną: `git diff --stat 2fcc5f7 08c6683`.
 
 ## 9. Materiały do ponownego niezależnego audytu
@@ -122,5 +122,5 @@ Ponadto: zakres FAZY 1 (OQ-07) i zmienna systemowa `PYTHONOPTIMIZE` (OQ-13).
 | Testy regresji | `tests/regression/test_audit1_phase0.py`, `tests/contracts/test_core_boundaries.py`, `tests/contracts/test_documentation.py` |
 | Porównanie z wersją audytowaną | `git diff 2fcc5f7 08c6683` (gałąź `task/faza0-korekta1`) |
 
-Gałąź nie została wypchnięta. Aby audytor mógł ją pobrać z GitHub, potrzebne jest polecenie
-użytkownika (`git push origin task/faza0-korekta1`).
+Gałąź jest dostępna na GitHub: `origin/task/faza0-korekta1` (wypchnięta na polecenie użytkownika,
+bez scalania do `main`).

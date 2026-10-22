@@ -53,11 +53,12 @@ Szczegóły i polecenia: [reports/phase0/korekta1/KOREKTA1_TESTY.md](../reports/
   [reports/phase0/FAZA0_RYZYKA.md](../reports/phase0/FAZA0_RYZYKA.md).
 
 ## 5. Stan Git
-- Gałąź robocza: `task/faza0-korekta1` (od `main` = `2fcc5f7`); `main` i `origin/main` bez zmian; **brak push**.
+- Gałąź robocza: `task/faza0-korekta1` (od `main` = `2fcc5f7`), wypchnięta na `origin/task/faza0-korekta1`
+  2026-10-22 na polecenie użytkownika (bez scalania). `main` i `origin/main` bez zmian (`2fcc5f7`).
 - Ostatni zweryfikowany commit: **`08c6683e89344f0a773e71073cef7f8f8ea1beaa`** (`08c6683`) — kod, testy i dokumentacja korekty 1;
-  odtworzony w czystym klonie. Następny commit uzupełnia tylko ten plik i `reports/phase0/korekta1/`
+  odtworzony w czystym klonie. Kolejne commity zmieniają tylko ten plik i `reports/phase0/korekta1/`
   — sprawdzenie: `git diff --stat 08c6683 HEAD`.
-- Scalenie do `main` i `git push`: wyłącznie na polecenie użytkownika.
+- Scalenie do `main` i każdy kolejny `git push`: wyłącznie na polecenie użytkownika.
 - Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Otwarte decyzje
