@@ -70,12 +70,13 @@ rekomendacjami: [docs/DECISIONS.md](../../../docs/DECISIONS.md).
 - Zweryfikowany commit (kod, testy, dokumentacja korekty 2): **`73263fac89e0d721414522d0ca6afa4ed08dfdb3`** (`73263fa`) na gałęzi
   `task/faza0-korekta2`, utworzonej z `task/faza0-korekta1` = `f0c36e9` (HEAD audytowany w audycie 2).
   Na nim wykonano odtworzenie w czystym klonie.
-- Kolejny commit zawiera wyłącznie uzupełnienie wyników odtworzenia i identyfikatora commita w
+- Kolejne commity zawierają wyłącznie dokumentację: wyniki odtworzenia, identyfikator commita i stan push w
   `docs/PROJECT_STATE.md` i `reports/phase0/korekta2/` (bez zmian kodu, testów, konfiguracji);
   sprawdzenie: `git diff --stat 73263fa HEAD`.
 - Porównanie z wersją audytowaną: `git diff --stat f0c36e9 73263fa`.
 - `main` = `origin/main` = `2fcc5f7`; `origin/task/faza0-korekta1` = `f0c36e9`. Gałąź korekty 2
-  **nie została wypchnięta** ani scalona — wymaga to polecenia użytkownika.
+  wypchnięta na `origin/task/faza0-korekta2` 2026-10-22 na polecenie użytkownika;
+  **bez scalania do `main`** — scalenie wymaga polecenia użytkownika.
 
 ## 6. Materiały do ponownego audytu
 | Materiał | Ścieżka |

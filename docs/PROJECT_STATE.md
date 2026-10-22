@@ -54,11 +54,12 @@ Szczegóły i polecenia: [reports/phase0/korekta2/KOREKTA2_TESTY.md](../reports/
 - Szczegóły: [reports/phase0/korekta2/KOREKTA2_RAPORT.md](../reports/phase0/korekta2/KOREKTA2_RAPORT.md) §4.
 
 ## 5. Stan Git
-- Gałąź robocza: `task/faza0-korekta2` (od `task/faza0-korekta1` = `f0c36e9`); `main` = `origin/main` = `2fcc5f7`; `origin/task/faza0-korekta1` = `f0c36e9`; **brak push korekty 2**.
+- Gałąź robocza: `task/faza0-korekta2` (od `task/faza0-korekta1` = `f0c36e9`); `main` = `origin/main` = `2fcc5f7`; `origin/task/faza0-korekta1` = `f0c36e9`. Gałąź `task/faza0-korekta2` wypchnięta na
+  `origin/task/faza0-korekta2` 2026-10-22 na polecenie użytkownika (bez scalania do `main`).
 - Ostatni zweryfikowany commit: **`73263fac89e0d721414522d0ca6afa4ed08dfdb3`** (`73263fa`) — kod, testy i dokumentacja korekty 2;
   odtworzony w czystym klonie. Kolejne commity zmieniają tylko ten plik i `reports/phase0/korekta2/`
   — sprawdzenie: `git diff --stat 73263fa HEAD`.
-- Push gałęzi, scalenie do `main`: wyłącznie na polecenie użytkownika.
+- Scalenie do `main` i każdy kolejny `git push`: wyłącznie na polecenie użytkownika.
 - Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Decyzje
