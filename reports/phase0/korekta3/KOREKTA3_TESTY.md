@@ -41,4 +41,18 @@ Próby przed/po: `command_logs/08_probes_before_after.txt` — przed: 8 wyciekó
 17 cofnięć (M17 — korekta 3: `OverflowError` znowu nieprzechwytywany; M12–M16 — korekta 2; M1–M11 — korekta 1; M10 dostosowana do nowego wcięcia w `utc.py`), zestaw bazowy 778 zaliczonych — **17/17 wykrytych** (M17: 29 niezaliczonych; pozostałe od 1 do 18, M10: 292 niezaliczone i 98 błędów); pliki przywrócone bajt w bajt (`command_logs/09_mutation_check.txt`, zawiera kod skryptu). Nie jest to pełne badanie mutacyjne wszystkich możliwych zmian.
 
 ## 6. Odtworzenie w czystym środowisku
-OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+**ZALICZONE.** Nowy klon gałęzi `task/faza0-korekta3` w commicie `f74cff1`, nowe `.venv`, Windows PowerShell 5.1, polecenia skopiowane dosłownie z DEVELOPMENT.md §2–§6 (`command_logs/07_clean_reproduction.txt`):
+
+| Krok | Wynik |
+|---|---|
+| `py -3.14 -m venv .venv`; `pip install --upgrade pip==26.2.2`; `pip install -c requirements-dev.lock -e ".[dev]"` | kod 0 |
+| `pytest` | **778 zaliczonych**, 0 niezaliczonych, 0 pominiętych |
+| `ruff check .` / `ruff format --check .` | bez uwag / 70 plików sformatowanych |
+| `mypy` | bez błędów (32 pliki) |
+| test importu `-I` | `0.0.2 2` |
+| zainstalowane pakiety vs `requirements-dev.lock` | identyczne (17 pakietów) |
+| próby korekty 3 (K2-A01, skan wycieków) | 0 wycieków |
+| próby korekty 2 i audytu 1 | wyniki jak w korekcie 2 (epoch odrzucany, profil RFC 3339 przyjmowany, 12 × `ValidationError`) |
+| `git status` po wszystkich krokach | czysty |
+
+Wszystkie 12 kodów wyjścia: 0.

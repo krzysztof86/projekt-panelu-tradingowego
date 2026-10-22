@@ -8,7 +8,7 @@
 | Aktualna faza | **FAZA 0 — korekta 3 zakończona, oczekuje na weryfikację audytora i decyzję użytkownika o odbiorze.** FAZA 0 **nie została przyjęta**. Audyt 3: „Rekomenduję odbiór po jednej dodatkowej poprawce obsługi błędu granicznego czasu” (K2-A01). |
 | Ostatni ukończony etap | Korekta 3 FAZY 0: K2-A01 (surowy `OverflowError` przy normalizacji do UTC) |
 | Następne zatwierdzone zadanie | **Weryfikacja korekty 3 przez audytora i decyzja użytkownika o odbiorze FAZY 0.** FAZA 1 **nie jest zatwierdzona** i nie ma zdefiniowanego zakresu (OQ-07). |
-| Ostatni zweryfikowany commit | patrz sekcja 5 |
+| Ostatni zweryfikowany commit | `f74cff1` (szczegóły: sekcja 5) |
 | Raporty | Korekta 3: [reports/phase0/korekta3/](../reports/phase0/korekta3/) — zacznij od `KOREKTA3_RAPORT.md`. Audyt 3: [reports/phase0/audyt3/](../reports/phase0/audyt3/). Wcześniejsze korekty, audyty i raport FAZY 0: [reports/phase0/](../reports/phase0/). |
 | Wymagania i decyzje użytkownika | [requirements/](requirements/) — specyfikacja FAZY 0, zlecenie korekty 1, decyzje z korekty 2 |
 
@@ -38,7 +38,7 @@ silnik statusów zdarzeń, replay, Market Scanner L1, GUI PySide6. Pakiety `core
 | mypy (strict) | bez błędów (32 pliki) |
 | Import pakietu (`-I`) | `0.0.2 2` |
 | Test mutacyjny korekty 3 | 17/17 cofniętych poprawek wykrytych |
-| Odtworzenie w czystym klonie | patrz sekcja 5 i `KOREKTA3_TESTY.md` §6 |
+| Odtworzenie w czystym klonie | zaliczone (commit `f74cff1`, PowerShell 5.1, 778 testów) |
 
 Szczegóły i polecenia: [reports/phase0/korekta3/KOREKTA3_TESTY.md](../reports/phase0/korekta3/KOREKTA3_TESTY.md).
 
@@ -56,7 +56,11 @@ Szczegóły i polecenia: [reports/phase0/korekta3/KOREKTA3_TESTY.md](../reports/
 
 ## 5. Stan Git
 - Gałąź robocza: `task/faza0-korekta3` (od `task/faza0-korekta2` = `6c633aa`); `main` = `origin/main` = `2fcc5f7`; **brak push korekty 3**.
-- OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+- Ostatni zweryfikowany commit: **`f74cff1f5137d656619726fdcba7d9866d2b1ad9`** (`f74cff1`) — kod, testy i dokumentacja korekty 3;
+  odtworzony w czystym klonie. Kolejne commity zmieniają tylko ten plik i `reports/phase0/korekta3/`
+  — sprawdzenie: `git diff --stat f74cff1 HEAD`.
+- Push gałęzi, scalenie do `main`: wyłącznie na polecenie użytkownika.
+- Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Decyzje
 - **ACCEPTED:** DEC-001, DEC-014, DEC-017 (wymagania); DEC-004, DEC-005, DEC-010, DEC-020,

@@ -57,7 +57,15 @@ zmienia tylko rodzaj zgłaszanego błędu.
 - OQ-14, OQ-15, OQ-16 pozostają otwarte przed modułami konektorów, replay i storage.
 
 ## 5. Git
-OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+- Zweryfikowany commit (kod, testy, dokumentacja korekty 3): **`f74cff1f5137d656619726fdcba7d9866d2b1ad9`** (`f74cff1`) na gałęzi
+  `task/faza0-korekta3`, utworzonej z `task/faza0-korekta2` = `6c633aa` (HEAD audytowany w audycie 3).
+  Na nim wykonano odtworzenie w czystym klonie.
+- Kolejny commit zawiera wyłącznie uzupełnienie wyników odtworzenia i identyfikatora commita w
+  `docs/PROJECT_STATE.md` i `reports/phase0/korekta3/` (bez zmian kodu, testów, konfiguracji);
+  sprawdzenie: `git diff --stat f74cff1 HEAD`.
+- Porównanie z wersją audytowaną: `git diff --stat 6c633aa f74cff1`.
+- `main` = `origin/main` = `2fcc5f7`. Gałąź korekty 3 **nie została wypchnięta** ani scalona —
+  wymaga to polecenia użytkownika.
 
 ## 6. Materiały do weryfikacji
 | Materiał | Ścieżka |
