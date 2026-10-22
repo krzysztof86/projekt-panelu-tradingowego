@@ -55,11 +55,12 @@ Szczegóły i polecenia: [reports/phase0/korekta3/KOREKTA3_TESTY.md](../reports/
 - Szczegóły: [reports/phase0/korekta3/KOREKTA3_RAPORT.md](../reports/phase0/korekta3/KOREKTA3_RAPORT.md) §4.
 
 ## 5. Stan Git
-- Gałąź robocza: `task/faza0-korekta3` (od `task/faza0-korekta2` = `6c633aa`); `main` = `origin/main` = `2fcc5f7`; **brak push korekty 3**.
+- Gałąź robocza: `task/faza0-korekta3` (od `task/faza0-korekta2` = `6c633aa`); `main` = `origin/main` = `2fcc5f7`. Gałąź `task/faza0-korekta3` wypchnięta na
+  `origin/task/faza0-korekta3` 2026-10-22 na polecenie użytkownika (bez scalania do `main`).
 - Ostatni zweryfikowany commit: **`f74cff1f5137d656619726fdcba7d9866d2b1ad9`** (`f74cff1`) — kod, testy i dokumentacja korekty 3;
   odtworzony w czystym klonie. Kolejne commity zmieniają tylko ten plik i `reports/phase0/korekta3/`
   — sprawdzenie: `git diff --stat f74cff1 HEAD`.
-- Push gałęzi, scalenie do `main`: wyłącznie na polecenie użytkownika.
+- Scalenie do `main` i każdy kolejny `git push`: wyłącznie na polecenie użytkownika.
 - Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Decyzje
