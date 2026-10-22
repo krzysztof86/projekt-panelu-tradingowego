@@ -1,0 +1,5 @@
+# date: 2026-10-22T16:52:35Z
+# shell: Git Bash, PYTHONOPTIMIZE unset for this process
+$ ./.venv/Scripts/python.exe -m ruff check .
+All checks passed!
+# exit code: 0

@@ -1,0 +1,115 @@
+{
+  "synthetic": true,
+  "description": "SYNTHETIC test data for Market Intelligence Desktop data contracts. All prices, quantities, timestamps and identifiers are invented and do not describe real market activity.",
+  "schema_version": 1,
+  "instruments": [
+    {
+      "schema_version": 1,
+      "exchange": "BYBIT",
+      "symbol": "ETHUSDT",
+      "market_type": "USDT_LINEAR_PERPETUAL",
+      "base_asset": "ETH",
+      "quote_asset": "USDT",
+      "status": "TRADING",
+      "tick_size": "0.01",
+      "listed_at": "2021-01-01T00:00:00Z"
+    },
+    {
+      "schema_version": 1,
+      "exchange": "BINANCE",
+      "symbol": "ETHUSDT",
+      "market_type": "USDT_LINEAR_PERPETUAL",
+      "base_asset": "ETH",
+      "quote_asset": "USDT",
+      "status": "TRADING",
+      "tick_size": "0.01",
+      "listed_at": null
+    }
+  ],
+  "market_ticks": [
+    {
+      "schema_version": 1,
+      "instrument": {
+        "exchange": "BINANCE",
+        "symbol": "ETHUSDT",
+        "market_type": "USDT_LINEAR_PERPETUAL",
+        "base_asset": "ETH",
+        "quote_asset": "USDT",
+        "status": "TRADING",
+        "tick_size": "0.01"
+      },
+      "last_price": "3000.01",
+      "exchange_time": null,
+      "received_at": "2026-01-05T12:00:00.250Z",
+      "source": "SYNTHETIC",
+      "quality": {"status": "WARMUP", "reason": "synthetic: fewer than 60 samples collected"}
+    }
+  ],
+  "candles": [
+    {
+      "schema_version": 1,
+      "instrument": {
+        "exchange": "BYBIT",
+        "symbol": "ETHUSDT",
+        "market_type": "USDT_LINEAR_PERPETUAL",
+        "base_asset": "ETH",
+        "quote_asset": "USDT",
+        "status": "TRADING",
+        "tick_size": "0.01"
+      },
+      "interval": "5m",
+      "start": "2026-01-05T12:00:00Z",
+      "end": "2026-01-05T12:05:00Z",
+      "open": "3000.00",
+      "high": "3012.50",
+      "low": "2998.10",
+      "close": "3010.00",
+      "turnover_usdt": "0",
+      "is_closed": false,
+      "source": "SYNTHETIC",
+      "quality": {"status": "VALID", "reason": null}
+    }
+  ],
+  "trades": [
+    {
+      "schema_version": 1,
+      "instrument": {
+        "exchange": "BINANCE",
+        "symbol": "ETHUSDT",
+        "market_type": "USDT_LINEAR_PERPETUAL",
+        "base_asset": "ETH",
+        "quote_asset": "USDT",
+        "status": "TRADING",
+        "tick_size": "0.01"
+      },
+      "trade_id": "1000000001",
+      "price": "3000.01",
+      "quantity": "0.125",
+      "value_usdt": "375.00125",
+      "aggressor_side": "SELL",
+      "executed_at": "2026-01-05T12:00:00.100Z",
+      "received_at": "2026-01-05T12:00:00.140Z",
+      "source": "SYNTHETIC",
+      "quality": {"status": "VALID"}
+    }
+  ],
+  "market_events": [
+    {
+      "schema_version": 1,
+      "event_id": "00000000-0000-4000-8000-000000000002",
+      "instrument_id": "BYBIT:USDT_LINEAR_PERPETUAL:ETHUSDT",
+      "detector_id": "D2",
+      "detector_version": "0.1.0",
+      "config_version": "synthetic-cfg-1",
+      "detected_at": "2026-01-05T12:05:00Z",
+      "window_start": "2026-01-05T12:00:00Z",
+      "window_end": "2026-01-05T12:05:00Z",
+      "direction": "NON_DIRECTIONAL",
+      "observed_values": [{"name": "turnover", "value": "9000000", "unit": "USDT"}],
+      "reference_values": [{"name": "turnover", "value": "1500000", "unit": "USDT"}],
+      "quality": {"status": "VALID"},
+      "status": "REJECTED",
+      "rejection_reason": "synthetic: rejected by reviewer"
+    }
+  ]
+}

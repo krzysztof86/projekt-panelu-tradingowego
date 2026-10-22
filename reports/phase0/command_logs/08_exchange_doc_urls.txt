@@ -1,0 +1,28 @@
+# date: 2026-10-22 (UTC)
+# shell: Git Bash
+# Purpose: confirm that official exchange documentation URLs cited in docs/EXCHANGE_API.md
+# resolve. Only documentation websites were contacted; no exchange API endpoint was called.
+$ curl -s -o /dev/null -L --max-time 20 -w '%{http_code}' <url>
+
+200 https://bybit-exchange.github.io/docs/v5/intro
+200 https://bybit-exchange.github.io/docs/v5/market/instrument
+200 https://bybit-exchange.github.io/docs/v5/market/kline
+200 https://bybit-exchange.github.io/docs/v5/market/recent-trade
+200 https://bybit-exchange.github.io/docs/v5/market/tickers
+200 https://bybit-exchange.github.io/docs/v5/websocket/public/trade
+200 https://bybit-exchange.github.io/docs/v5/websocket/public/kline
+200 https://bybit-exchange.github.io/docs/v5/websocket/public/ticker
+200 https://bybit-exchange.github.io/docs/v5/rate-limit
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/general-info
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Exchange-Information
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Kline-Candlestick-Data
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Compressed-Aggregate-Trades-List
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/market-data/rest-api/Symbol-Price-Ticker
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams/Aggregate-Trade-Streams
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams/Kline-Candlestick-Streams
+202 https://developers.binance.com/docs/derivatives/usds-margined-futures/websocket-market-streams
+
+# Interpretation: Bybit pages returned HTTP 200. Binance pages returned HTTP 202, which this
+# site uses for an automated-client check; page content could NOT be verified from this
+# environment. The Binance URLs are therefore marked UNVERIFIED in docs/EXCHANGE_API.md.
+# Page CONTENT (field names, enum values) was not read for either exchange in Phase 0.

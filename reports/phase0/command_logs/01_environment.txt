@@ -1,0 +1,26 @@
+﻿# date (UTC): 2026-10-22T16:47:15Z
+# shell: Windows PowerShell 5.1.26100.9711
+$ (Get-CimInstance Win32_OperatingSystem) | Caption, Version, OSArchitecture
+Microsoft Windows 11 Home | 10.0.26200 | 64-bitowy
+$ $env:PROCESSOR_ARCHITECTURE
+AMD64
+$ py -0p   (paths shortened)
+-V:3.14 *        <USER_HOME>\AppData\Local\Programs\Python\Python314\python.exe
+$ py -3.14 --version
+Python 3.14.5
+$ git --version
+git version 2.53.0.windows.1
+$ .\.venv\Scripts\python.exe -m pip --version
+pip 26.2.2 from <REPO>\.venv\Lib\site-packages\pip (python 3.14)
+$ Get-ExecutionPolicy -List
+Scope ExecutionPolicy
+        ----- ---------------
+MachinePolicy       Undefined
+   UserPolicy       Undefined
+      Process          Bypass
+  CurrentUser    RemoteSigned
+ LocalMachine    RemoteSigned
+$ [Environment]::GetEnvironmentVariable('PYTHONOPTIMIZE', <scope>)
+Process=2 User= Machine=2
+# Initial state of the working directory before Phase 0: empty (0 files), not a Git repository.
+# Other Python launchers found on PATH: WindowsApps python.exe (Store alias), Python install manager python.exe; all report Python 3.14.5.

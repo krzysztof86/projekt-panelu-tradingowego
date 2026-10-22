@@ -1,0 +1,21 @@
+# date: 2026-10-22 (UTC), executed before documentation was written
+# shell: Git Bash, PYTHONOPTIMIZE unset for this process
+# Purpose: confirm that the test suite detects removal of each key validation rule.
+# Method: for each line below, the named check was disabled with a one-line `sed` edit
+# (condition replaced by `False`), the full suite was run with
+#   ./.venv/Scripts/python.exe -m pytest -q -p no:cacheprovider
+# and the file was restored from the Git index (`git restore <file>`).
+# Source files were verified to be unchanged afterwards (`git status`), and the final
+# suite run (02_pytest.txt) was executed on the restored code.
+
+mutation (file: rule disabled)                                        -> pytest summary
+candle.py: high >= max(open, close)                                   -> 2 failed, 273 passed
+candle.py: start aligned to interval since Unix epoch                 -> 1 failed, 274 passed
+trade.py: value_usdt == price * quantity                              -> 1 failed, 274 passed
+clock/utc.py: naive datetime rejection                                -> 11 failed, 264 passed
+market_event.py: detected_at >= window_end                            -> 1 failed, 274 passed
+market_event.py: VERIFIED requires VALID quality                      -> 1 failed, 274 passed
+types.py: float input rejection                                       -> 4 failed, 271 passed
+data_quality.py: reason required for non-VALID status                 -> 5 failed, 270 passed
+
+# Result: every disabled rule was detected by at least one failing test.

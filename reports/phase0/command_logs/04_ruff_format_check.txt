@@ -1,0 +1,5 @@
+# date: 2026-10-22T16:52:35Z
+# shell: Git Bash, PYTHONOPTIMIZE unset for this process
+$ ./.venv/Scripts/python.exe -m ruff format --check .
+42 files already formatted
+# exit code: 0

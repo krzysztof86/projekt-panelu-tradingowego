@@ -1,0 +1,20 @@
+# Pinned versions of ALL packages in the development environment (direct and transitive).
+# Use as a constraints file: python -m pip install -c requirements-dev.lock -e ".[dev]"
+# Regenerate: see docs/DEVELOPMENT.md (section 'Aktualizacja zależności').
+annotated-types==0.8.0
+ast_serialize==0.13.1
+colorama==0.4.6
+iniconfig==2.3.1
+librt==0.16.0
+mypy==2.4.0
+mypy_extensions==1.1.0
+packaging==26.3
+pathspec==1.1.1
+pluggy==1.7.0
+pydantic==2.14.1
+pydantic_core==2.50.1
+Pygments==2.21.0
+pytest==9.1.1
+ruff==0.17.1
+typing-inspection==0.4.4
+typing_extensions==4.16.0
