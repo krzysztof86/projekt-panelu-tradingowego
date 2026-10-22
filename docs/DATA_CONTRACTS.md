@@ -53,6 +53,10 @@ porównany z dziedziną `value_usdt`, nie suma skal czynników. W dziedzinie roz
 poprawnych czynników o iloczynie < 1E+20 ma reprezentowalną wartość `value_usdt` (np.
 `0.0000000001 × 0.0000000001 = 1E-20` jest przyjmowane); iloczyn ≥ 1E+20 jest odrzucany.
 
+Przechowywanie (dla przyszłego storage): `value_usdt` może mieć do **56 cyfr** (20 przed
+przecinkiem + 36 po nim) — nie zakładać `DECIMAL(38, 18)`; zapis musi zachować pełną
+reprezentację (OQ-16).
+
 ### 1.2 Tworzenie zmienionych rekordów (DEC-021, ACCEPTED)
 | Ścieżka | Zachowanie |
 |---|---|
@@ -80,7 +84,11 @@ parsowany; żaden inny parser nie interpretuje tekstu. Dozwolony jest wyłączni
   `datetime` ich nie reprezentuje, a parser Pythona po cichu przesuwa `24:00` na następny dzień);
 - tylko cyfry ASCII; bez białych znaków na początku i końcu; data musi istnieć w kalendarzu;
 - tekst w tym profilu bez strefy jest odrzucany jako czas naiwny;
-- `-00:00` jest przyjmowane jako UTC.
+- `-00:00` jest przyjmowane jako UTC;
+- czas, którego odpowiednik w UTC wypada poza zakres `datetime` (lata 1–9999), np.
+  `0001-01-01T00:00:00+01:00` lub `9999-12-31T23:59:59-01:00`, jest odrzucany jako
+  `ValidationError` (w kontraktach) albo `ValueError` (`ensure_utc`, `Candle.contains`) —
+  nigdy surowym `OverflowError` (K2-A01, korekta 3). Lata nie są dodatkowo ograniczane.
 
 Kontrakty serializują czas dokładnie w tym profilu (zawsze z `Z`), więc wynik `model_dump_json()`
 jest poprawnym wejściem (test `test_contract_output_is_accepted_input`). Konwersja epoch (ms) →

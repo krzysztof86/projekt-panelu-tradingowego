@@ -5,6 +5,18 @@ Format: [Keep a Changelog](https://keepachangelog.com/pl/1.1.0/). Wersje pakietu
 
 ## [Unreleased]
 
+## [0.0.2] — 2026-10-22 — FAZA 0, korekta 3 (po audycie 3)
+Bez zmiany zakresu przyjmowanych danych, schematu i numeru pakietu. Ustalenia audytu:
+`reports/phase0/audyt3/`; raport korekty: `reports/phase0/korekta3/`.
+
+### Naprawiono
+- K2-A01: czas bez odpowiednika w UTC (np. `0001-01-01T00:00:00+01:00`) zgłaszał surowy
+  `OverflowError`; teraz `ValueError` w `ensure_utc` i `ValidationError` w kontraktach.
+
+### Dodano
+- `tests/regression/test_audit3_phase0.py`; kopia audytu 3 w `reports/phase0/audyt3/`;
+  OQ-16 (przechowanie `value_usdt` do 56 cyfr).
+
 ## [0.0.2] — 2026-10-22 — FAZA 0, korekta 2 (po audycie 2)
 Schemat i pakiet bez zmiany numeru (DEC-026: schemat fazy nieprzyjętej). Ustalenia audytu:
 `reports/phase0/audyt2/`; raport korekty: `reports/phase0/korekta2/`; decyzje użytkownika:

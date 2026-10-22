@@ -97,3 +97,15 @@ Plik: `tests/regression/test_audit2_phase0.py`. Ustalenia: `reports/phase0/audyt
 
 Test mutacyjny korekty 2 (16 cofnięć: 5 nowych i 11 z korekty 1):
 `reports/phase0/korekta2/command_logs/09_mutation_check.txt`.
+
+## 9. Regresje audytu 3 FAZY 0 (korekta 3)
+Plik: `tests/regression/test_audit3_phase0.py`. Ustalenia: `reports/phase0/audyt3/AUDYT_FAZY0_KOREKTA2.md`.
+
+| Ustalenie | Klasa testów | Co sprawdza |
+|---|---|---|
+| K2-A01 | `TestK2A01UtcOverflow` | oba krańce (`0001-01-01T00:00:00+01:00`, `9999-12-31T23:59:59-01:00`) jako tekst na ścieżce Python i JSON oraz jako `datetime`; każde pole czasu w każdym modelu; `ensure_utc` i `Candle.contains` zgłaszają `ValueError` z przyczyną `OverflowError` |
+| K2-A01 (granice poprawne) | `TestRepresentableEdges` | daty graniczne, których odpowiednik UTC istnieje, są przyjmowane i normalizowane |
+| Ogólna własność | `TestOnlyValidationErrors` | dane skrajne (ogromne wykładniki, 4000–5000 cyfr, sNaN, przesunięcie +25 h, ogromna liczba JSON) kończą się wyłącznie `ValidationError` |
+
+Test mutacyjny korekty 3 (17 cofnięć: 1 nowe i 16 z korekt 1–2):
+`reports/phase0/korekta3/command_logs/09_mutation_check.txt`.

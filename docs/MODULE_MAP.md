@@ -39,9 +39,11 @@
 ### `core.clock` (`core/clock/utc.py`) — ISTNIEJE
 - Odpowiedzialność: normalizacja czasu do UTC.
 - Interfejs: `ensure_utc(value: datetime) -> datetime`; `UTC_EPOCH: datetime`.
-- Wejście/wyjście: świadomy `datetime` → `datetime` w UTC; naiwny → `ValueError`.
+- Wejście/wyjście: świadomy `datetime` → `datetime` w UTC; naiwny lub bez odpowiednika w UTC
+  (poza latami 1–9999) → `ValueError` (nigdy `OverflowError`).
 - Zależności: biblioteka standardowa.
-- Testy: `tests/unit/test_primitives.py::TestEnsureUtc` (+ pośrednio wszystkie testy czasu).
+- Testy: `tests/unit/test_primitives.py::TestEnsureUtc`,
+  `tests/regression/test_audit3_phase0.py` (+ pośrednio wszystkie testy czasu).
 - Dokumentacja: DATA_CONTRACTS.md §1, DEC-004.
 
 ### `core.models.base` — ISTNIEJE
@@ -133,5 +135,5 @@ Tylko `__init__.py`. Przeznaczenie (PLANOWANE): cykl życia i historia `MarketEv
 | `tests/conftest.py` | syntetyczne fixture'y |
 | `tests/unit/` | testy modeli i prymitywów |
 | `tests/contracts/` | serializacja, schemat, fixture'y, import, granice `core` (I/O), odnośniki dokumentacji |
-| `tests/regression/` | testy regresji ustaleń audytów (`test_audit1_phase0.py`: A-01–A-07, E-1–E-4; `test_audit2_phase0.py`: K1-01, profil RFC 3339, dziedzina iloczynu) |
+| `tests/regression/` | testy regresji ustaleń audytów (`test_audit1_phase0.py`: A-01–A-07, E-1–E-4; `test_audit2_phase0.py`: K1-01, profil RFC 3339, dziedzina iloczynu; `test_audit3_phase0.py`: K2-A01, wyłącznie `ValidationError` dla danych skrajnych) |
 | `tests/fixtures/synthetic_contract_samples.json` | syntetyczne rekordy JSON |

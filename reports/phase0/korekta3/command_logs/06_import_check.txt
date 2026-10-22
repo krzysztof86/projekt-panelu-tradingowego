@@ -1,0 +1,5 @@
+# date: 2026-10-22T19:27:59Z
+# shell: Git Bash, branch task/faza0-korekta3, PYTHONOPTIMIZE unset for this process
+$ ./.venv/Scripts/python.exe -I -c import market_intelligence, market_intelligence.core.models as m; print(market_intelligence.__version__, m.SCHEMA_VERSION)
+0.0.2 2
+# exit code: 0

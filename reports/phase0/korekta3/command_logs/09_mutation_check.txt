@@ -1,0 +1,178 @@
+# Mutation check of correction 3: each correction (3, 2 and 1) is reverted individually, the full suite
+# is run, and the file is restored byte-for-byte (asserted by the script).
+# Precondition: the unmodified suite passed immediately before this run (see 02_pytest.txt).
+# shell: Git Bash, PYTHONOPTIMIZE unset; date: 2026-10-22T19:27:56Z
+$ python -I mutate3.py   (run from the repository root; script source below)
+
+M17 K2-A01: OverflowError no longer converted (pre-correction behaviour): DETECTED -> 29 failed, 749 passed in 1.45s
+M12 K1-01: numeric deny-list without the leading-dot alternative (pre-correction regex): DETECTED -> 15 failed, 763 passed in 1.41s
+M13 K1-01: RFC 3339 allow-list removed (text handed to the Pydantic parser): DETECTED -> 17 failed, 761 passed in 1.39s
+M14 K1-01: fraction limit 6 -> 9 digits (silent truncation): DETECTED -> 4 failed, 774 passed in 1.32s
+M15 DEC-020: value_usdt back to the 18-place domain: DETECTED -> 4 failed, 774 passed in 1.29s
+M16 DEC-020: value_usdt without any domain limit: DETECTED -> 2 failed, 776 passed in 1.33s
+M1 A-01: product via localcontext(prec=100) (pre-correction arithmetic): DETECTED -> 3 failed, 775 passed in 1.34s
+M2 A-01: financial domain check removed from factors: DETECTED -> 14 failed, 764 passed in 1.38s
+M3 A-02: exact-int schema_version check removed: DETECTED -> 12 failed, 766 passed in 1.39s
+M4 A-03: timestamp input-type restriction removed: DETECTED -> 6 failed, 772 passed in 1.35s
+M5 E-3: binary-input rejection removed: DETECTED -> 11 failed, 767 passed in 1.36s
+M6 A-06: single-line check removed: DETECTED -> 18 failed, 760 passed in 1.49s
+M7 A-07: nested revalidation disabled: DETECTED -> 3 failed, 775 passed in 1.32s
+M8 A-07: validated model_copy removed: DETECTED -> 5 failed, 773 passed in 1.36s
+M9 A-05: core import of an I/O module: DETECTED -> 2 failed, 776 passed in 1.32s
+M10 A-05: file I/O at runtime inside core: DETECTED -> 292 failed, 388 passed, 98 errors in 3.71s
+M11 docs: broken link in AGENTS.md: DETECTED -> 1 failed, 777 passed in 1.27s
+undetected mutations: 0
+# exit code: 0
+
+## Script: mutate3.py
+"""Correction 3 mutation check: revert each correction (1, 2 and 3) individually.
+
+Usage (from the repository root): python -I mutate3.py
+Every file is restored byte-for-byte after each mutation (asserted).
+"""
+
+import subprocess
+import sys
+from pathlib import Path
+
+M = "src/market_intelligence/core/models/"
+MUTATIONS = [
+    # ---- correction 3 (audit 3)
+    (
+        "M17 K2-A01: OverflowError no longer converted (pre-correction behaviour)",
+        "src/market_intelligence/core/clock/utc.py",
+        "    except OverflowError as exc:",
+        "    except ZeroDivisionError as exc:",
+    ),
+    # ---- correction 2 (audit 2)
+    (
+        "M12 K1-01: numeric deny-list without the leading-dot alternative (pre-correction regex)",
+        M + "types.py",
+        r'_NUMERIC_STRING = re.compile(r"\s*[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?\s*")',
+        r'_NUMERIC_STRING = re.compile(r"\s*[+-]?\d+(?:\.\d*)?(?:[eE][+-]?\d+)?\s*")',
+    ),
+    (
+        "M13 K1-01: RFC 3339 allow-list removed (text handed to the Pydantic parser)",
+        M + "types.py",
+        "    if _RFC3339.fullmatch(value) is None:\n"
+        '        raise ValueError(f"timestamp text must have the form {_TIMESTAMP_FORMAT}")\n'
+        "    return datetime.fromisoformat(value)",
+        "    return value",
+    ),
+    (
+        "M14 K1-01: fraction limit 6 -> 9 digits (silent truncation)",
+        M + "types.py",
+        r'    r"(?:\.[0-9]{1,6})?)"',
+        r'    r"(?:\.[0-9]{1,9})?)"',
+    ),
+    (
+        "M15 DEC-020: value_usdt back to the 18-place domain",
+        M + "types.py",
+        "    AfterValidator(_financial_domain(MAX_PRODUCT_DECIMAL_PLACES)),",
+        "    AfterValidator(_financial_domain(MAX_DECIMAL_PLACES)),",
+    ),
+    (
+        "M16 DEC-020: value_usdt without any domain limit",
+        M + "types.py",
+        "    AfterValidator(_financial_domain(MAX_PRODUCT_DECIMAL_PLACES)),",
+        "",
+    ),
+    # ---- correction 1 (audit 1), updated to the current code
+    (
+        "M1 A-01: product via localcontext(prec=100) (pre-correction arithmetic)",
+        M + "trade.py",
+        "expected = _exact_product(self.price, self.quantity)",
+        "from decimal import localcontext\n"
+        "        with localcontext(prec=100):\n"
+        "            expected = self.price * self.quantity",
+    ),
+    (
+        "M2 A-01: financial domain check removed from factors",
+        M + "types.py",
+        "FiniteDecimal = Annotated[_CheckedDecimal, AfterValidator(_financial_domain(MAX_DECIMAL_PLACES))]",
+        "FiniteDecimal = _CheckedDecimal",
+    ),
+    (
+        "M3 A-02: exact-int schema_version check removed",
+        M + "base.py",
+        "    if type(value) is not int:",
+        "    if False:",
+    ),
+    (
+        "M4 A-03: timestamp input-type restriction removed",
+        M + "types.py",
+        "    if not isinstance(value, str):",
+        "    if False:",
+    ),
+    (
+        "M5 E-3: binary-input rejection removed",
+        M + "base.py",
+        "                if isinstance(value, _BINARY_TYPES):",
+        "                if False:",
+    ),
+    (
+        "M6 A-06: single-line check removed",
+        M + "types.py",
+        "    if value.splitlines() != [value]:",
+        "    if False:",
+    ),
+    (
+        "M7 A-07: nested revalidation disabled",
+        M + "base.py",
+        'revalidate_instances="always"',
+        'revalidate_instances="never"',
+    ),
+    (
+        "M8 A-07: validated model_copy removed",
+        M + "base.py",
+        "        if update:\n            return self.replace(**update)\n        return super().model_copy(deep=deep)",
+        "        return super().model_copy(update=update, deep=deep)",
+    ),
+    (
+        "M9 A-05: core import of an I/O module",
+        "src/market_intelligence/core/clock/utc.py",
+        "from typing import Final\n",
+        "from typing import Final\nimport socket  # noqa: F401\n",
+    ),
+    (
+        "M10 A-05: file I/O at runtime inside core",
+        "src/market_intelligence/core/clock/utc.py",
+        "        return value.astimezone(UTC)",
+        "        __import__('builtins').open('x')\n        return value.astimezone(UTC)",
+    ),
+    (
+        "M11 docs: broken link in AGENTS.md",
+        "AGENTS.md",
+        "(docs/PROJECT_STATE.md)",
+        "(docs/PROJECT_STATE_MISSING.md)",
+    ),
+]
+
+root = Path.cwd()
+failures = 0
+for name, rel, old, new in MUTATIONS:
+    path = root / rel
+    original = path.read_bytes()
+    text = original.decode("utf-8")
+    if text.count(old) != 1:
+        print(f"{name}: SETUP ERROR (pattern found {text.count(old)}x)")
+        failures += 1
+        continue
+    path.write_bytes(text.replace(old, new).encode("utf-8"))
+    try:
+        result = subprocess.run(
+            [sys.executable, "-m", "pytest", "-q", "-p", "no:cacheprovider"],
+            capture_output=True,
+            text=True,
+        )
+        lines = result.stdout.strip().splitlines()
+        summary = lines[-1] if lines else result.stderr.strip()[-200:]
+        detected = result.returncode != 0
+        failures += 0 if detected else 1
+        print(f"{name}: {'DETECTED' if detected else 'NOT DETECTED'} -> {summary}")
+    finally:
+        path.write_bytes(original)
+    assert path.read_bytes() == original
+
+print(f"undetected mutations: {failures}")
+sys.exit(1 if failures else 0)

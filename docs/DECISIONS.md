@@ -11,6 +11,9 @@ Audyt 1 FAZY 0: [reports/phase0/audyt1/AUDYT_FAZY0.md](../reports/phase0/audyt1/
 Audyt 2: [reports/phase0/audyt2/AUDYT_FAZY0_KOREKTA1.md](../reports/phase0/audyt2/AUDYT_FAZY0_KOREKTA1.md)
 (K1-01, §9). Korekta 2: [reports/phase0/korekta2/](../reports/phase0/korekta2/). Decyzje użytkownika
 z korekty 2: [requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md).
+Audyt 3: [reports/phase0/audyt3/AUDYT_FAZY0_KOREKTA2.md](../reports/phase0/audyt3/AUDYT_FAZY0_KOREKTA2.md)
+(K2-A01). Korekta 3: [reports/phase0/korekta3/](../reports/phase0/korekta3/) — poprawka obsługi błędu,
+bez zmiany decyzji.
 
 ## Decyzje wymagające rozstrzygnięcia użytkownika
 
@@ -287,3 +290,4 @@ Nadal **PROPOSED** (kolejność według wpływu na kontrakty):
 | OQ-13 | Czy zmienna systemowa `PYTHONOPTIMIZE=2` na komputerze deweloperskim ma zostać (decyzja właściciela komputera) | Środowisko |
 | OQ-14 | Czy dziedzina DEC-020 (czynniki ≤ 18 miejsc, iloczyn ≤ 36 miejsc, \|x\| < 1E+20) obejmuje wszystkie rzeczywiste ceny, ilości i obroty z Bybit/Binance (sprawdzić na udokumentowanych formatach przed konektorami) | Konektory, Trade |
 | OQ-15 | Wydajność `revalidate_instances="always"` przy strumieniach transakcji (DEC-021) | Konektory, replay |
+| OQ-16 | Sposób przechowania `Trade.value_usdt` bez utraty dokładności: do 56 cyfr (20 + 36), więc nie `DECIMAL(38, 18)` (audyt 3, §Pozostałe ryzyka 3) | Storage |

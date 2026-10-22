@@ -1,0 +1,416 @@
+# Correction 3 probes: K2-A01 and a scan for exceptions other than the expected type (script source at the end).
+# Contracts must raise ValidationError; direct calls of ensure_utc / Candle.contains must raise ValueError.
+# BEFORE was run with utc.py from 6c633aa (correction temporarily stashed); AFTER on the correction 3 working tree.
+# shell: Git Bash, PYTHONOPTIMIZE unset; date: 2026-10-22
+$ python -I k3_probes.py
+
+## BEFORE — utc.py as in 6c633aa (audited HEAD)
+[
+  {
+    "probe": "K2-A01 listed_at 0001-01-01T00:00:00+01:00 [python]",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 listed_at 0001-01-01T00:00:00+01:00 [json]",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 listed_at 9999-12-31T23:59:59-01:00 [python]",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 listed_at 9999-12-31T23:59:59-01:00 [json]",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 listed_at datetime(1,1,1,+01:00)",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 listed_at datetime(9999,12,31,23,59,59,-01:00)",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 ensure_utc(datetime(1,1,1,+01:00))",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "K2-A01 Candle.contains(datetime(1,1,1,+01:00))",
+    "outcome": "LEAK OverflowError",
+    "value": "date value out of range"
+  },
+  {
+    "probe": "boundary 0001-01-01T00:00:00Z [python]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 0001-01-01T00:00:00Z [json]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T23:59:59.999999Z [python]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59.999999+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T23:59:59.999999Z [json]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59.999999+00:00"
+  },
+  {
+    "probe": "boundary 0001-01-01T01:00:00+01:00 [python]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 0001-01-01T01:00:00+01:00 [json]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T22:59:59-01:00 [python]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T22:59:59-01:00 [json]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59+00:00"
+  },
+  {
+    "probe": "event window at year 1/9999",
+    "outcome": "ACCEPTED",
+    "value": "schema_version=2 event_id=UUID('00000000-0000-4000-8000-000000000003') instrumen"
+  },
+  {
+    "probe": "candle start 9999-12-31T23:59Z (end out of range)",
+    "outcome": "ValidationError",
+    "value": "Value error, end - start must equal the interval 1d (1 day, 0:00:00) [type=value_error, input_value="
+  },
+  {
+    "probe": "tick_size huge exponent text",
+    "outcome": "ValidationError",
+    "value": "Input should be a valid decimal [type=decimal_parsing, input_value='1e999999999999999999999', input_"
+  },
+  {
+    "probe": "tick_size huge negative exponent text",
+    "outcome": "ValidationError",
+    "value": "Input should be a valid decimal [type=decimal_parsing, input_value='1e-999999999999999999999', input"
+  },
+  {
+    "probe": "tick_size 5000-digit integer text",
+    "outcome": "ValidationError",
+    "value": "Value error, absolute value must be below 1E+20 [type=value_error, input_value='11111111111111111111"
+  },
+  {
+    "probe": "tick_size 5000-digit int object",
+    "outcome": "ValidationError",
+    "value": "Value error, absolute value must be below 1E+20 [type=value_error, input_value=111111111111111111111"
+  },
+  {
+    "probe": "tick_size signaling NaN Decimal",
+    "outcome": "ValidationError",
+    "value": "Input should be a finite number [type=finite_number, input_value=Decimal('sNaN'), input_type=Decimal"
+  },
+  {
+    "probe": "tick_size negative zero",
+    "outcome": "ValidationError",
+    "value": "Value error, value must be greater than zero [type=value_error, input_value='-0', input_type=str]"
+  },
+  {
+    "probe": "Trade huge exponent price",
+    "outcome": "ValidationError",
+    "value": "Input should be a valid decimal [type=decimal_parsing, input_value='1e999999999999999999999', input_"
+  },
+  {
+    "probe": "Trade 5000-digit price",
+    "outcome": "ValidationError",
+    "value": "Value error, absolute value must be below 1E+20 [type=value_error, input_value='11111111111111111111"
+  },
+  {
+    "probe": "schema_version huge JSON int",
+    "outcome": "ValidationError",
+    "value": "Invalid JSON: number out of range at line 1 column 4321 [type=json_invalid, input_value='{\"schema_ve"
+  },
+  {
+    "probe": "listed_at datetime with +25h tzinfo",
+    "outcome": "ValidationError",
+    "value": "Value error, offset must be a timedelta strictly between -timedelta(hours=24) and timedelta(hours=24"
+  }
+]
+# leaks: 8
+
+## AFTER — correction 3
+[
+  {
+    "probe": "K2-A01 listed_at 0001-01-01T00:00:00+01:00 [python]",
+    "outcome": "ValidationError",
+    "value": "Value error, 0001-01-01T00:00:00+01:00 has no representable UTC equivalent (outside the datetime ran"
+  },
+  {
+    "probe": "K2-A01 listed_at 0001-01-01T00:00:00+01:00 [json]",
+    "outcome": "ValidationError",
+    "value": "Value error, 0001-01-01T00:00:00+01:00 has no representable UTC equivalent (outside the datetime ran"
+  },
+  {
+    "probe": "K2-A01 listed_at 9999-12-31T23:59:59-01:00 [python]",
+    "outcome": "ValidationError",
+    "value": "Value error, 9999-12-31T23:59:59-01:00 has no representable UTC equivalent (outside the datetime ran"
+  },
+  {
+    "probe": "K2-A01 listed_at 9999-12-31T23:59:59-01:00 [json]",
+    "outcome": "ValidationError",
+    "value": "Value error, 9999-12-31T23:59:59-01:00 has no representable UTC equivalent (outside the datetime ran"
+  },
+  {
+    "probe": "K2-A01 listed_at datetime(1,1,1,+01:00)",
+    "outcome": "ValidationError",
+    "value": "Value error, 0001-01-01T00:00:00+01:00 has no representable UTC equivalent (outside the datetime ran"
+  },
+  {
+    "probe": "K2-A01 listed_at datetime(9999,12,31,23,59,59,-01:00)",
+    "outcome": "ValidationError",
+    "value": "Value error, 9999-12-31T23:59:59-01:00 has no representable UTC equivalent (outside the datetime ran"
+  },
+  {
+    "probe": "K2-A01 ensure_utc(datetime(1,1,1,+01:00))",
+    "outcome": "ValueError",
+    "value": "0001-01-01T00:00:00+01:00 has no representable UTC equivalent (outside the datetime range of years 1"
+  },
+  {
+    "probe": "K2-A01 Candle.contains(datetime(1,1,1,+01:00))",
+    "outcome": "ValueError",
+    "value": "0001-01-01T00:00:00+01:00 has no representable UTC equivalent (outside the datetime range of years 1"
+  },
+  {
+    "probe": "boundary 0001-01-01T00:00:00Z [python]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 0001-01-01T00:00:00Z [json]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T23:59:59.999999Z [python]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59.999999+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T23:59:59.999999Z [json]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59.999999+00:00"
+  },
+  {
+    "probe": "boundary 0001-01-01T01:00:00+01:00 [python]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 0001-01-01T01:00:00+01:00 [json]",
+    "outcome": "ACCEPTED",
+    "value": "0001-01-01 00:00:00+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T22:59:59-01:00 [python]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59+00:00"
+  },
+  {
+    "probe": "boundary 9999-12-31T22:59:59-01:00 [json]",
+    "outcome": "ACCEPTED",
+    "value": "9999-12-31 23:59:59+00:00"
+  },
+  {
+    "probe": "event window at year 1/9999",
+    "outcome": "ACCEPTED",
+    "value": "schema_version=2 event_id=UUID('00000000-0000-4000-8000-000000000003') instrumen"
+  },
+  {
+    "probe": "candle start 9999-12-31T23:59Z (end out of range)",
+    "outcome": "ValidationError",
+    "value": "Value error, end - start must equal the interval 1d (1 day, 0:00:00) [type=value_error, input_value="
+  },
+  {
+    "probe": "tick_size huge exponent text",
+    "outcome": "ValidationError",
+    "value": "Input should be a valid decimal [type=decimal_parsing, input_value='1e999999999999999999999', input_"
+  },
+  {
+    "probe": "tick_size huge negative exponent text",
+    "outcome": "ValidationError",
+    "value": "Input should be a valid decimal [type=decimal_parsing, input_value='1e-999999999999999999999', input"
+  },
+  {
+    "probe": "tick_size 5000-digit integer text",
+    "outcome": "ValidationError",
+    "value": "Value error, absolute value must be below 1E+20 [type=value_error, input_value='11111111111111111111"
+  },
+  {
+    "probe": "tick_size 5000-digit int object",
+    "outcome": "ValidationError",
+    "value": "Value error, absolute value must be below 1E+20 [type=value_error, input_value=111111111111111111111"
+  },
+  {
+    "probe": "tick_size signaling NaN Decimal",
+    "outcome": "ValidationError",
+    "value": "Input should be a finite number [type=finite_number, input_value=Decimal('sNaN'), input_type=Decimal"
+  },
+  {
+    "probe": "tick_size negative zero",
+    "outcome": "ValidationError",
+    "value": "Value error, value must be greater than zero [type=value_error, input_value='-0', input_type=str]"
+  },
+  {
+    "probe": "Trade huge exponent price",
+    "outcome": "ValidationError",
+    "value": "Input should be a valid decimal [type=decimal_parsing, input_value='1e999999999999999999999', input_"
+  },
+  {
+    "probe": "Trade 5000-digit price",
+    "outcome": "ValidationError",
+    "value": "Value error, absolute value must be below 1E+20 [type=value_error, input_value='11111111111111111111"
+  },
+  {
+    "probe": "schema_version huge JSON int",
+    "outcome": "ValidationError",
+    "value": "Invalid JSON: number out of range at line 1 column 4321 [type=json_invalid, input_value='{\"schema_ve"
+  },
+  {
+    "probe": "listed_at datetime with +25h tzinfo",
+    "outcome": "ValidationError",
+    "value": "Value error, offset must be a timedelta strictly between -timedelta(hours=24) and timedelta(hours=24"
+  }
+]
+# leaks: 0
+
+## Script: k3_probes.py
+"""Correction 3 probes: K2-A01 and a scan for exceptions other than ValidationError.
+
+Each probe constructs a contract from an otherwise valid SYNTHETIC payload with one field
+replaced by an edge-case value and records the exception type. Anything other than
+ValidationError (or success) is a leak.
+"""
+
+import json
+import sys
+from datetime import datetime, timedelta, timezone, tzinfo
+from decimal import Decimal
+
+from pydantic import ValidationError
+
+from market_intelligence.core.clock import ensure_utc
+from market_intelligence.core.models import Candle, DataQuality, Instrument, MarketEvent, Trade
+
+sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+
+IK = dict(
+    exchange="BYBIT", symbol="BTCUSDT", market_type="USDT_LINEAR_PERPETUAL", base_asset="BTC",
+    quote_asset="USDT", status="TRADING", tick_size="0.10",
+)
+INSTRUMENT = Instrument(**IK)
+TK = dict(
+    instrument=INSTRUMENT, trade_id="synthetic-k3", price="1", quantity="1", value_usdt="1",
+    aggressor_side="BUY", executed_at="2026-01-05T12:00:00Z", received_at="2026-01-05T12:00:00Z",
+    source="SYNTHETIC", quality=DataQuality.valid(),
+)
+PLUS1 = timezone(timedelta(hours=1))
+MINUS1 = timezone(timedelta(hours=-1))
+
+results: list[dict[str, str]] = []
+
+
+def probe(name: str, fn, expected: type[Exception] = ValidationError) -> None:  # type: ignore[no-untyped-def]
+    """Record the outcome; any exception other than ``expected`` is a LEAK.
+
+    Contract construction must raise ValidationError. Direct calls of plain functions
+    (ensure_utc, Candle.contains) must raise ValueError, as their docstrings state.
+    """
+    try:
+        value = fn()
+        results.append({"probe": name, "outcome": "ACCEPTED", "value": str(value)[:80]})
+    except Exception as exc:  # noqa: BLE001 - the point is to record leaks
+        message = str(exc).splitlines()[-2].strip() if isinstance(exc, ValidationError) else str(exc)
+        is_expected = type(exc) is expected or (
+            expected is ValueError and isinstance(exc, ValueError) and not isinstance(exc, ValidationError)
+        )
+        label = type(exc).__name__ if is_expected else f"LEAK {type(exc).__name__}"
+        results.append({"probe": name, "outcome": label, "value": message[:100]})
+
+
+def listed(value: object, path: str):  # type: ignore[no-untyped-def]
+    if path == "json":
+        return Instrument.model_validate_json(json.dumps(IK | {"listed_at": value})).listed_at
+    return Instrument.model_validate(IK | {"listed_at": value}).listed_at
+
+
+# K2-A01 (audit 3) — text on both paths and aware datetime objects
+for text in ["0001-01-01T00:00:00+01:00", "9999-12-31T23:59:59-01:00"]:
+    for path in ("python", "json"):
+        probe(f"K2-A01 listed_at {text} [{path}]", lambda t=text, p=path: listed(t, p))
+probe("K2-A01 listed_at datetime(1,1,1,+01:00)", lambda: listed(datetime(1, 1, 1, tzinfo=PLUS1), "python"))
+probe("K2-A01 listed_at datetime(9999,12,31,23,59,59,-01:00)", lambda: listed(datetime(9999, 12, 31, 23, 59, 59, tzinfo=MINUS1), "python"))
+probe("K2-A01 ensure_utc(datetime(1,1,1,+01:00))", lambda: ensure_utc(datetime(1, 1, 1, tzinfo=PLUS1)), ValueError)
+probe("K2-A01 Candle.contains(datetime(1,1,1,+01:00))", lambda: Candle(
+    instrument=INSTRUMENT, interval="1m", start="2026-01-05T12:00:00Z", end="2026-01-05T12:01:00Z",
+    open="1", high="1", low="1", close="1", turnover_usdt="0", is_closed=True, source="SYNTHETIC",
+    quality=DataQuality.valid()).contains(datetime(1, 1, 1, tzinfo=PLUS1)), ValueError)
+
+# boundaries already in UTC (must be accepted)
+for text in ["0001-01-01T00:00:00Z", "9999-12-31T23:59:59.999999Z", "0001-01-01T01:00:00+01:00", "9999-12-31T22:59:59-01:00"]:
+    for path in ("python", "json"):
+        probe(f"boundary {text} [{path}]", lambda t=text, p=path: listed(t, p))
+
+# scan: other edge inputs that could leak non-validation exceptions
+probe("event window at year 1/9999", lambda: MarketEvent(
+    event_id="00000000-0000-4000-8000-000000000003", instrument_id=INSTRUMENT.instrument_id,
+    detector_id="D1", detector_version="0.1.0", config_version="c", detected_at="9999-12-31T23:59:59Z",
+    window_start="0001-01-01T00:00:00Z", window_end="9999-12-31T23:59:59Z", direction="UP",
+    observed_values=[{"name": "x", "value": "1", "unit": "USDT"}],
+    reference_values=[{"name": "x", "value": "1", "unit": "USDT"}], quality=DataQuality.valid(),
+    status="CANDIDATE"))
+probe("candle start 9999-12-31T23:59Z (end out of range)", lambda: Candle(
+    instrument=INSTRUMENT, interval="1d", start="9999-12-31T00:00:00Z", end="9999-12-31T23:59:59Z",
+    open="1", high="1", low="1", close="1", turnover_usdt="0", is_closed=True, source="SYNTHETIC",
+    quality=DataQuality.valid()))
+for name, value in [
+    ("huge exponent text", "1e999999999999999999999"),
+    ("huge negative exponent text", "1e-999999999999999999999"),
+    ("5000-digit integer text", "1" * 5000),
+    ("5000-digit int object", int("1" * 4000)),
+    ("signaling NaN Decimal", Decimal("sNaN")),
+    ("negative zero", "-0"),
+]:
+    probe(f"tick_size {name}", lambda v=value: Instrument(**(IK | {"tick_size": v})).tick_size)
+for name, value in [("huge exponent price", "1e999999999999999999999"), ("5000-digit price", "1" * 5000)]:
+    probe(f"Trade {name}", lambda v=value: Trade(**(TK | {"price": v})).price)
+probe("schema_version huge JSON int", lambda: Instrument.model_validate_json(
+    '{"schema_version": ' + "9" * 5000 + ', ' + json.dumps(IK)[1:]))
+
+
+class _OutOfRangeTz(tzinfo):
+    """tzinfo returning an offset outside the range datetime accepts (+25 h)."""
+
+    def utcoffset(self, dt):  # type: ignore[no-untyped-def]
+        return timedelta(hours=25)
+
+    def dst(self, dt):  # type: ignore[no-untyped-def]
+        return None
+
+
+probe("listed_at datetime with +25h tzinfo", lambda: listed(datetime(2026, 1, 1, tzinfo=_OutOfRangeTz()), "python"))
+
+
+print(json.dumps(results, indent=2, ensure_ascii=False))
+leaks = [r for r in results if r["outcome"].startswith("LEAK")]
+print(f"# leaks: {len(leaks)}")
