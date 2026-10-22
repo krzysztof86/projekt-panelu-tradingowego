@@ -8,7 +8,7 @@
 | Aktualna faza | **FAZA 0 — zakończona, oczekuje na niezależny audyt architektoniczny** |
 | Ostatni ukończony etap | FAZA 0: fundament, kontrakty danych, testy, dokumentacja |
 | Następne zatwierdzone zadanie | **Niezależny audyt architektoniczny FAZY 0.** FAZA 1 **nie jest zatwierdzona** i nie ma zdefiniowanego zakresu w repozytorium (OQ-07). |
-| Ostatni zweryfikowany commit | patrz sekcja 5 |
+| Ostatni zweryfikowany commit | `470eb03` (szczegóły: sekcja 5) |
 | Raporty ostatniej fazy | [reports/phase0/](../reports/phase0/) — zacznij od `FAZA0_RAPORT.md` |
 
 ## 1. Działająca implementacja
@@ -31,7 +31,7 @@ silnik statusów zdarzeń, replay, Market Scanner L1, GUI PySide6. Pakiety `core
 | Ruff format check | bez uwag |
 | mypy (strict) | bez błędów (27 plików) |
 | Import pakietu (`-I`) | `0.0.1 1` |
-| Odtworzenie z czystego klonu | patrz `reports/phase0/FAZA0_TESTY.md` |
+| Odtworzenie z czystego klonu | zaliczone (commit `470eb03`, PowerShell 5.1) |
 
 Szczegóły i polecenia: [reports/phase0/FAZA0_TESTY.md](../reports/phase0/FAZA0_TESTY.md).
 
@@ -44,7 +44,8 @@ Szczegóły i polecenia: [reports/phase0/FAZA0_TESTY.md](../reports/phase0/FAZA0
 
 ## 5. Stan Git
 - Gałąź: `main` (repozytorium lokalne, brak zdalnego, brak push).
-- Ostatni zweryfikowany commit: zostanie wpisany w kolejnym commicie dokumentacyjnym (patrz niżej).
+- Ostatni zweryfikowany commit: **`470eb03`** (kod, testy, dokumentacja; odtworzony z czystego klonu). Następny commit uzupełnia tylko ten plik i `reports/phase0/` — sprawdzenie: `git diff --stat 470eb03 HEAD`.
+- Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Otwarte decyzje
 - Decyzje **PROPOSED** do zatwierdzenia w audycie: DEC-002 – DEC-013, DEC-015,

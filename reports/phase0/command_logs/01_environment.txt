@@ -1,4 +1,4 @@
-﻿# date (UTC): 2026-10-22T16:47:15Z
+# date (UTC): 2026-10-22T16:47:15Z
 # shell: Windows PowerShell 5.1.26100.9711
 $ (Get-CimInstance Win32_OperatingSystem) | Caption, Version, OSArchitecture
 Microsoft Windows 11 Home | 10.0.26200 | 64-bitowy

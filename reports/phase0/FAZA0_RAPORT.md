@@ -37,7 +37,7 @@ Log: `command_logs/01_environment.txt`.
 | Ruff format check | bez uwag |
 | mypy strict | bez błędów (27 plików) |
 | Import po instalacji editable | `0.0.1 1` |
-| Odtworzenie w czystym klonie | OCZEKUJE — uzupełniane po pierwszym commicie (odtworzenie wymaga commita do sklonowania) |
+| Odtworzenie w czystym klonie | ZALICZONE — 277 testów, Ruff, mypy, import; wszystkie polecenia kod 0 (FAZA0_TESTY.md §3) |
 | Test mutacyjny | 8/8 reguł wykrytych |
 Szczegóły: [FAZA0_TESTY.md](FAZA0_TESTY.md).
 
@@ -58,7 +58,10 @@ Szczegóły: [FAZA0_TESTY.md](FAZA0_TESTY.md).
 | Nie przekroczono zakresu FAZY 0 | tak — brak REST/WS, połączeń z giełdami, detektorów, GUI, alertów, tradingu, kluczy API; jedyny ruch sieciowy: PyPI (instalacja) i sprawdzenie dostępności stron dokumentacji giełd |
 
 ## 5. Git
-OCZEKUJE — uzupełniane po pierwszym commicie (odtworzenie wymaga commita do sklonowania)
+- Repozytorium lokalne, gałąź `main`, brak zdalnego repozytorium; **nie wykonano `git push`**.
+- Commit zweryfikowany (kod, testy, dokumentacja): `470eb03` — „Phase 0: project foundation, data contracts and agent-agnostic docs”. Na nim wykonano odtworzenie z czystego klonu.
+- Kolejny commit zawiera wyłącznie uzupełnienie raportów i PROJECT_STATE.md (wyniki odtworzenia, identyfikator commita); nie zmienia kodu, testów ani konfiguracji.
+- Weryfikacja: `git log --oneline` oraz `git diff --stat 470eb03 HEAD` (tylko `docs/PROJECT_STATE.md` i `reports/phase0/`).
 
 ## 6. Zastrzeżenia do audytu
 - 16 decyzji w statusie PROPOSED wymaga zatwierdzenia lub odrzucenia (FAZA0_RYZYKA.md §3).

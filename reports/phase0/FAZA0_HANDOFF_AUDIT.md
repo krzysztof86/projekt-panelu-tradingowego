@@ -38,7 +38,7 @@ Tabela „chcę zmienić…” wskazuje plik bez przeglądania repozytorium. **O
 
 ## 5. Dokumentacja uruchomieniowa
 Polecenia z DEVELOPMENT.md §2–§6 wykonane w PowerShell 5.1 w nowym klonie
-(`command_logs/07_fresh_clone_reproduction.txt`). Wynik: OCZEKUJE — uzupełniane po pierwszym commicie (odtworzenie wymaga commita do sklonowania)
+(`command_logs/07_fresh_clone_reproduction.txt`). Wynik: **ZALICZONE** — klon commita `470eb03`, nowe `.venv`; wszystkie 9 poleceń zakończone kodem 0: pytest 277 zaliczonych / 0 niezaliczonych / 0 pominiętych, Ruff lint i format bez uwag, mypy bez błędów, import `0.0.1 1`, zainstalowane wersje zgodne z `requirements-dev.lock` (`command_logs/07_fresh_clone_reproduction.txt`)
 
 ## 6. Ścieżki i odnośniki
 Automatyczna kontrola wszystkich plików `.md` (odnośniki względne `[..](..)`, kotwice oraz

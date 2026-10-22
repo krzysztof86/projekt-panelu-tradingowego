@@ -1,0 +1,8 @@
+# date: 2026-10-22T16:55:59Z
+# Purpose: verify every relative Markdown link, anchor and backticked repository path in all *.md files.
+# Method: one-off script (not part of the repository) that resolves [text](target) links relative to each file,
+#         checks '#anchor' against the target's headings, and checks backticked paths starting with src/, docs/, tests/,
+#         reports/, .github/ or top-level file names. External http(s) links are checked separately (08_exchange_doc_urls.txt).
+$ python -I check_links.py <REPO>
+markdown files: 21; references checked: 148; problems: 0
+# exit code: 0

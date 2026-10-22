@@ -40,7 +40,7 @@ repozytorium (nowe `.venv`, instalacja z `requirements-dev.lock`).
 Wynik i log: sekcja 3a poniżej oraz `command_logs/07_fresh_clone_reproduction.txt`.
 
 ### 3a. Wynik
-OCZEKUJE — uzupełniane po pierwszym commicie (odtworzenie wymaga commita do sklonowania)
+**ZALICZONE** — klon commita `470eb03`, nowe `.venv`; wszystkie 9 poleceń zakończone kodem 0: pytest 277 zaliczonych / 0 niezaliczonych / 0 pominiętych, Ruff lint i format bez uwag, mypy bez błędów, import `0.0.1 1`, zainstalowane wersje zgodne z `requirements-dev.lock` (`command_logs/07_fresh_clone_reproduction.txt`)
 
 ## 4. Test mutacyjny (kontrola jakości testów)
 Wyłączenie każdej z 8 kluczowych reguł walidacji powodowało niepowodzenie 1–11 testów.
