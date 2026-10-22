@@ -64,4 +64,18 @@ Próby audytu 1 na korekcie 2: `command_logs/10_audit1_probes.txt`.
 16 cofnięć (5 poprawek korekty 2: M12–M16; 11 poprawek korekty 1: M1–M11, zaktualizowanych do obecnego kodu), zestaw bazowy 720 zaliczonych — **16/16 wykrytych**, od 1 do 18 niezaliczonych testów na mutację (M10: 249 niezaliczonych i 98 błędów, bo blokowany zapis dotyka każdego pola czasu); pliki przywrócone bajt w bajt (`command_logs/09_mutation_check.txt`, zawiera kod skryptu). Nie jest to pełne badanie mutacyjne wszystkich możliwych zmian.
 
 ## 6. Odtworzenie w czystym środowisku
-OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+**ZALICZONE.** Nowy klon gałęzi `task/faza0-korekta2` w commicie `73263fa`, nowe `.venv`, Windows PowerShell 5.1, polecenia skopiowane dosłownie z DEVELOPMENT.md §2–§6 (`command_logs/07_clean_reproduction.txt`):
+
+| Krok | Wynik |
+|---|---|
+| `py -3.14 -m venv .venv`; `pip install --upgrade pip==26.2.2`; `pip install -c requirements-dev.lock -e ".[dev]"` | kod 0 |
+| `pytest` | **720 zaliczonych**, 0 niezaliczonych, 0 pominiętych |
+| `ruff check .` / `ruff format --check .` | bez uwag / 64 pliki sformatowane |
+| `mypy` | bez błędów (31 plików) |
+| test importu `-I` | `0.0.2 2` |
+| zainstalowane pakiety vs `requirements-dev.lock` | identyczne (17 pakietów) |
+| próby korekty 2 (K1-01 i warianty, profil RFC 3339, `1E-10 × 1E-10`) | jak w `08_probes_before_after.txt` (AFTER): epoch odrzucany, profil przyjmowany, `1E-20` przyjmowane |
+| próby audytu 1 | 12 × `ValidationError`; A-04 — równość snapshotów (zamierzone) |
+| `git status` po wszystkich krokach | czysty |
+
+Wszystkie 11 kodów wyjścia: 0.

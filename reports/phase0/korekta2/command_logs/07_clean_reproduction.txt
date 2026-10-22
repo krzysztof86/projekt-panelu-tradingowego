@@ -1,0 +1,339 @@
+# date (UTC): 2026-10-22T19:08:36Z
+# shell: Windows PowerShell 5.1.26100.9711
+# PYTHONOPTIMIZE before (inherited from system): 2
+PS> git clone --quiet --branch task/faza0-korekta2 "<REPO>" "<TEMP>\mid-clone-k2"
+# exit code: 0
+PS> git log --oneline -1
+73263fa Phase 0 correction 2: fix K1-01 and record user decisions
+# exit code: 0
+# --- commands below are copied verbatim from docs/DEVELOPMENT.md sections 2-6 ---
+PS> $env:PYTHONOPTIMIZE = $null
+PS> py -3.14 -m venv .venv
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -m pip install --upgrade pip==26.2.2
+WARNING: Cache entry deserialization failed, entry ignored
+Collecting pip==26.2.2
+  Using cached pip-26.2.2-py3-none-any.whl.metadata (4.6 kB)
+Using cached pip-26.2.2-py3-none-any.whl (1.8 MB)
+Installing collected packages: pip
+  Attempting uninstall: pip
+    Found existing installation: pip 26.1.1
+    Uninstalling pip-26.1.1:
+      Successfully uninstalled pip-26.1.1
+Successfully installed pip-26.2.2
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -m pip install -c requirements-dev.lock -e ".[dev]"
+WARNING: Cache entry deserialization failed, entry ignored
+WARNING: Cache entry deserialization failed, entry ignored
+Obtaining file:///<TEMP>/mid-clone-k2
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Collecting pydantic==2.14.1 (from market-intelligence-desktop==0.0.2)
+  Using cached pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+Collecting pytest==9.1.1 (from market-intelligence-desktop==0.0.2)
+  Using cached pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+Collecting mypy==2.4.0 (from market-intelligence-desktop==0.0.2)
+  Using cached mypy-2.4.0-cp314-cp314-win_amd64.whl.metadata (2.4 kB)
+Collecting ruff==0.17.1 (from market-intelligence-desktop==0.0.2)
+  Using cached ruff-0.17.1-py3-none-win_amd64.whl.metadata (21 kB)
+Collecting typing_extensions>=4.6.0 (from mypy==2.4.0->market-intelligence-desktop==0.0.2)
+  Using cached typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting mypy_extensions>=1.0.0 (from mypy==2.4.0->market-intelligence-desktop==0.0.2)
+  Using cached mypy_extensions-1.1.0-py3-none-any.whl.metadata (1.1 kB)
+Collecting pathspec>=1.0.0 (from mypy==2.4.0->market-intelligence-desktop==0.0.2)
+  Using cached pathspec-1.1.1-py3-none-any.whl.metadata (14 kB)
+Collecting librt>=0.16.0 (from mypy==2.4.0->market-intelligence-desktop==0.0.2)
+  Using cached librt-0.16.0-cp314-cp314-win_amd64.whl.metadata (1.3 kB)
+Collecting ast-serialize<1.0.0,>=0.11.2 (from mypy==2.4.0->market-intelligence-desktop==0.0.2)
+  Using cached ast_serialize-0.13.1-cp39-abi3-win_amd64.whl.metadata (1.4 kB)
+Collecting annotated-types>=0.6.0 (from pydantic==2.14.1->market-intelligence-desktop==0.0.2)
+  Using cached annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.1 (from pydantic==2.14.1->market-intelligence-desktop==0.0.2)
+  Using cached pydantic_core-2.50.1-cp314-cp314-win_amd64.whl.metadata (6.7 kB)
+Collecting typing-inspection>=0.4.4 (from pydantic==2.14.1->market-intelligence-desktop==0.0.2)
+  Using cached typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting colorama>=0.4 (from pytest==9.1.1->market-intelligence-desktop==0.0.2)
+  Using cached colorama-0.4.6-py2.py3-none-any.whl.metadata (17 kB)
+Collecting iniconfig>=1.0.1 (from pytest==9.1.1->market-intelligence-desktop==0.0.2)
+  Using cached iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+Collecting packaging>=22 (from pytest==9.1.1->market-intelligence-desktop==0.0.2)
+  Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+Collecting pluggy<2,>=1.5 (from pytest==9.1.1->market-intelligence-desktop==0.0.2)
+  Using cached pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+Collecting pygments>=2.7.2 (from pytest==9.1.1->market-intelligence-desktop==0.0.2)
+  Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+Using cached mypy-2.4.0-cp314-cp314-win_amd64.whl (11.6 MB)
+Using cached pydantic-2.14.1-py3-none-any.whl (488 kB)
+Using cached pydantic_core-2.50.1-cp314-cp314-win_amd64.whl (2.2 MB)
+Using cached pytest-9.1.1-py3-none-any.whl (386 kB)
+Using cached ruff-0.17.1-py3-none-win_amd64.whl (10.1 MB)
+Using cached ast_serialize-0.13.1-cp39-abi3-win_amd64.whl (1.2 MB)
+Using cached pluggy-1.7.0-py3-none-any.whl (27 kB)
+Using cached annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Using cached colorama-0.4.6-py2.py3-none-any.whl (25 kB)
+Using cached iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+Using cached librt-0.16.0-cp314-cp314-win_amd64.whl (120 kB)
+Using cached mypy_extensions-1.1.0-py3-none-any.whl (5.0 kB)
+Using cached packaging-26.3-py3-none-any.whl (129 kB)
+Using cached pathspec-1.1.1-py3-none-any.whl (57 kB)
+Using cached pygments-2.21.0-py3-none-any.whl (1.3 MB)
+Using cached typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Using cached typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Building wheels for collected packages: market-intelligence-desktop
+  Building editable for market-intelligence-desktop (pyproject.toml): started
+  Building editable for market-intelligence-desktop (pyproject.toml): finished with status 'done'
+  Created wheel for market-intelligence-desktop: filename=market_intelligence_desktop-0.0.2-0.editable-py3-none-any.whl size=3075 sha256=546515d0d0b14a49f0529cafc4ba14952191ce89ce65a285d127ddfb80460063
+  Stored in directory: <USER_HOME>\AppData\Local\Temp\pip-ephem-wheel-cache-mad8liuy\wheels\2e\70\72\bae7d1526c5ea0d79137c7ecb3b6d51c519f8a66e0e29717b8
+Successfully built market-intelligence-desktop
+Installing collected packages: typing_extensions, ruff, pygments, pluggy, pathspec, packaging, mypy_extensions, librt, iniconfig, colorama, ast-serialize, annotated-types, typing-inspection, pytest, pydantic-core, mypy, pydantic, market-intelligence-desktop
+
+Successfully installed annotated-types-0.8.0 ast-serialize-0.13.1 colorama-0.4.6 iniconfig-2.3.1 librt-0.16.0 market-intelligence-desktop-0.0.2 mypy-2.4.0 mypy_extensions-1.1.0 packaging-26.3 pathspec-1.1.1 pluggy-1.7.0 pydantic-2.14.1 pydantic-core-2.50.1 pygments-2.21.0 pytest-9.1.1 ruff-0.17.1 typing-inspection-0.4.4 typing_extensions-4.16.0
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -m pytest
+============================= test session starts =============================
+platform win32 -- Python 3.14.5, pytest-9.1.1, pluggy-1.7.0
+rootdir: <TEMP>\mid-clone-k2
+configfile: pyproject.toml
+testpaths: tests
+collected 720 items
+
+tests\contracts\test_core_boundaries.py ................................ [  4%]
+................                                                         [  6%]
+tests\contracts\test_documentation.py .................................. [ 11%]
+.............................                                            [ 15%]
+tests\contracts\test_package_import.py .....                             [ 16%]
+tests\contracts\test_serialization.py ........................           [ 19%]
+tests\contracts\test_synthetic_fixtures.py ...                           [ 19%]
+tests\regression\test_audit1_phase0.py ................................. [ 24%]
+........................................................................ [ 34%]
+........................................................................ [ 44%]
+...............................                                          [ 48%]
+tests\regression\test_audit2_phase0.py ................................. [ 53%]
+........................................................................ [ 63%]
+.................                                                        [ 65%]
+tests\unit\test_candle.py .............................................. [ 72%]
+.......                                                                  [ 73%]
+tests\unit\test_data_quality.py ........................                 [ 76%]
+tests\unit\test_instrument.py .......................................... [ 82%]
+.                                                                        [ 82%]
+tests\unit\test_market_event.py ........................................ [ 87%]
+...........                                                              [ 89%]
+tests\unit\test_market_tick.py ..............                            [ 91%]
+tests\unit\test_primitives.py .........................                  [ 94%]
+tests\unit\test_trade.py .....................................           [100%]
+
+============================= 720 passed in 1.39s =============================
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -m ruff check .
+All checks passed!
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -m ruff format --check .
+64 files already formatted
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -m mypy
+Success: no issues found in 31 source files
+# exit code: 0
+PS> .\.venv\Scripts\python.exe -I -c "import market_intelligence, market_intelligence.core.models as m; print(market_intelligence.__version__, m.SCHEMA_VERSION)"
+0.0.2 2
+# exit code: 0
+# --- additional: installed versions vs requirements-dev.lock ---
+PS> Compare-Object (pip freeze --exclude-editable) (requirements-dev.lock entries)
+# result: identical (17 packages)
+# --- additional: correction 2 probes (K1-01 etc.) in the clean environment ---
+PS> .\.venv\Scripts\python.exe -I "<TEMP>\k2_probes.py"
+[
+  {
+    "input": ".5",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "+.5",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "-.5",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": ".5e3",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": ".5E+3",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "-.5e-1",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "2026-01-01 00:00:00+00:00",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00+0100",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00.123456789Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T24:00:00Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:60Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "20260101T000000Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.5Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.500000+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.500000+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.123456Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.123456+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.123456+00:00"
+  },
+  {
+    "input": "2026-01-01T01:00:00+01:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2025-12-31T19:00:00-05:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00",
+    "python": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_",
+    "json": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_"
+  },
+  {
+    "input": "Trade 1E-10 x 1E-10 = 1E-20",
+    "python": "ACCEPTED 1E-20"
+  }
+]
+# exit code: 0
+# --- additional: audit 1 probes in the clean environment ---
+PS> .\.venv\Scripts\python.exe -I "<TEMP>\a1_probes.py"
+[
+  {
+    "probe": "rounded_wrong_trade_accepted",
+    "exception": "ValidationError",
+    "message": "1 validation error for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further in"
+  },
+  {
+    "probe": "exact_trade_rejected",
+    "exception": "ValidationError",
+    "message": "2 validation errors for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further i"
+  },
+  {
+    "probe": "same_payload_with_ROUND_UP",
+    "exception": "ValidationError",
+    "message": "1 validation error for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further in"
+  },
+  {
+    "probe": "same_payload_with_Inexact_trap",
+    "exception": "ValidationError",
+    "message": "1 validation error for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further in"
+  },
+  {
+    "probe": "large_exponent_exact_trade",
+    "exception": "ValidationError",
+    "message": "2 validation errors for Trade\nprice\n  Value error, absolute value must be below 1E+20 [type=value_error, input_value='1e999999', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error\nvalue_usdt\n  Value error"
+  },
+  {
+    "probe": "carriage_return_reason",
+    "exception": "ValidationError",
+    "message": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='first\\rsecond', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value"
+  },
+  {
+    "probe": "schema_version_true",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=True, input_type=bool]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "schema_version_float_one",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=1.0, input_type=float]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "json_schema_version_true",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=True, input_type=bool]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "json_schema_version_float_one",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=1.0, input_type=float]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "numeric_timestamp_bytes",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\n  Value error, field 'listed_at': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange': 'BYBIT', 'sy...sted_at': b'1767225600'}, input_type=dict]\n    For further information v"
+  },
+  {
+    "probe": "instrument_metadata_change",
+    "result": {
+      "same_id": true,
+      "equal": false,
+      "set_size": 2
+    }
+  },
+  {
+    "probe": "unchecked_copy_accepted_nested",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\ntick_size\n  Value error, value must be greater than zero [type=value_error, input_value=Decimal('-1'), input_type=Decimal]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error"
+  }
+]
+# exit code: 0
+PS> git status --short
+# exit code: 0
+# exit codes: 0,0,0,0,0,0,0,0,0,0,0
+# Note: 'WARNING: Cache entry deserialization failed' comes from the user-level pip cache and is harmless.
+# k2_probes.py: source in 08_probes_before_after.txt; a1_probes.py: copy of reports/phase0/audyt1/AUDYT_FAZY0_PROBY.py.txt.

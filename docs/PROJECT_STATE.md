@@ -8,7 +8,7 @@
 | Aktualna faza | **FAZA 0 — korekta 2 zakończona, oczekuje na ponowny niezależny audyt.** FAZA 0 **nie została przyjęta** (audyt 2: „nie rekomenduję jeszcze bezwarunkowego odbioru”). |
 | Ostatni ukończony etap | Korekta 2 FAZY 0: K1-01 audytu 2, profil RFC 3339, rozdzielona dziedzina Decimal, decyzje użytkownika |
 | Następne zatwierdzone zadanie | **Ponowny niezależny audyt FAZY 0** (materiały: „Raporty”), następnie decyzja użytkownika o odbiorze. FAZA 1 **nie jest zatwierdzona** i nie ma zdefiniowanego zakresu (OQ-07). |
-| Ostatni zweryfikowany commit | patrz sekcja 5 |
+| Ostatni zweryfikowany commit | `73263fa` (szczegóły: sekcja 5) |
 | Raporty | Korekta 2: [reports/phase0/korekta2/](../reports/phase0/korekta2/) — zacznij od `KOREKTA2_RAPORT.md`. Audyt 2: [reports/phase0/audyt2/](../reports/phase0/audyt2/). Wcześniejsze: korekta 1, audyt 1, FAZA 0 w [reports/phase0/](../reports/phase0/). |
 | Wymagania i decyzje użytkownika | [requirements/](requirements/) — specyfikacja FAZY 0, zlecenie korekty 1, decyzje z korekty 2 |
 
@@ -37,7 +37,7 @@ silnik statusów zdarzeń, replay, Market Scanner L1, GUI PySide6. Pakiety `core
 | mypy (strict) | bez błędów (31 plików) |
 | Import pakietu (`-I`) | `0.0.2 2` |
 | Test mutacyjny korekty 2 | 16/16 cofniętych poprawek wykrytych |
-| Odtworzenie w czystym klonie | patrz sekcja 5 i `KOREKTA2_TESTY.md` §6 |
+| Odtworzenie w czystym klonie | zaliczone (commit `73263fa`, PowerShell 5.1, 720 testów) |
 
 Szczegóły i polecenia: [reports/phase0/korekta2/KOREKTA2_TESTY.md](../reports/phase0/korekta2/KOREKTA2_TESTY.md).
 
@@ -55,7 +55,11 @@ Szczegóły i polecenia: [reports/phase0/korekta2/KOREKTA2_TESTY.md](../reports/
 
 ## 5. Stan Git
 - Gałąź robocza: `task/faza0-korekta2` (od `task/faza0-korekta1` = `f0c36e9`); `main` = `origin/main` = `2fcc5f7`; `origin/task/faza0-korekta1` = `f0c36e9`; **brak push korekty 2**.
-- OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+- Ostatni zweryfikowany commit: **`73263fac89e0d721414522d0ca6afa4ed08dfdb3`** (`73263fa`) — kod, testy i dokumentacja korekty 2;
+  odtworzony w czystym klonie. Kolejne commity zmieniają tylko ten plik i `reports/phase0/korekta2/`
+  — sprawdzenie: `git diff --stat 73263fa HEAD`.
+- Push gałęzi, scalenie do `main`: wyłącznie na polecenie użytkownika.
+- Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Decyzje
 - **ACCEPTED:** DEC-001, DEC-014, DEC-017 (wymagania); DEC-004, DEC-005, DEC-010, DEC-020,
