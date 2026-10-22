@@ -58,7 +58,8 @@ Szczegóły: [FAZA0_TESTY.md](FAZA0_TESTY.md).
 | Nie przekroczono zakresu FAZY 0 | tak — brak REST/WS, połączeń z giełdami, detektorów, GUI, alertów, tradingu, kluczy API; jedyny ruch sieciowy: PyPI (instalacja) i sprawdzenie dostępności stron dokumentacji giełd |
 
 ## 5. Git
-- Repozytorium lokalne, gałąź `main`, brak zdalnego repozytorium; **nie wykonano `git push`**.
+- Gałąź `main`. Zdalne repozytorium `origin`: `https://github.com/krzysztof86/projekt-panelu-tradingowego.git`;
+  `git push` wykonany 2026-10-22 na wyraźne polecenie użytkownika (po zakończeniu kontroli FAZY 0).
 - Commit zweryfikowany (kod, testy, dokumentacja): `470eb03` — „Phase 0: project foundation, data contracts and agent-agnostic docs”. Na nim wykonano odtworzenie z czystego klonu.
 - Kolejny commit zawiera wyłącznie uzupełnienie raportów i PROJECT_STATE.md (wyniki odtworzenia, identyfikator commita); nie zmienia kodu, testów ani konfiguracji.
 - Weryfikacja: `git log --oneline` oraz `git diff --stat 470eb03 HEAD` (tylko `docs/PROJECT_STATE.md` i `reports/phase0/`).

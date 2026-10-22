@@ -15,7 +15,7 @@
 ## 2. Ograniczenia FAZY 0 (świadome)
 - Brak komunikacji z giełdami, brak danych rynkowych, brak detektorów, GUI, bazy, alertów.
 - Brak silnika przejść statusów `MarketEvent`.
-- Brak zdalnego repozytorium; nic nie zostało opublikowane.
+- Repozytorium wypchnięte na GitHub (`origin`) na polecenie użytkownika 2026-10-22; widoczność repozytorium (publiczne/prywatne) nie była sprawdzana z tego środowiska.
 - Brak licencji (OQ-08).
 
 ## 3. Decyzje oczekujące na zatwierdzenie

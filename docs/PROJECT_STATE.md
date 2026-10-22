@@ -43,7 +43,9 @@ Szczegóły i polecenia: [reports/phase0/FAZA0_TESTY.md](../reports/phase0/FAZA0
 - Pełna lista ryzyk: [reports/phase0/FAZA0_RYZYKA.md](../reports/phase0/FAZA0_RYZYKA.md).
 
 ## 5. Stan Git
-- Gałąź: `main` (repozytorium lokalne, brak zdalnego, brak push).
+- Gałąź: `main`, śledzi `origin/main`.
+- Zdalne repozytorium: `https://github.com/krzysztof86/projekt-panelu-tradingowego.git`
+  (push wykonany 2026-10-22 na polecenie użytkownika). Kolejne `git push` — tylko za zgodą użytkownika (AGENTS.md §5).
 - Ostatni zweryfikowany commit: **`470eb03`** (kod, testy, dokumentacja; odtworzony z czystego klonu). Następny commit uzupełnia tylko ten plik i `reports/phase0/` — sprawdzenie: `git diff --stat 470eb03 HEAD`.
 - Drzewo robocze po przekazaniu: czyste (`git status`).
 
