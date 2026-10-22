@@ -100,4 +100,27 @@ Ponadto: zakres FAZY 1 (OQ-07) i zmienna systemowa `PYTHONOPTIMIZE` (OQ-13).
 - Weryfikację wykonał ten sam wykonawca, który wprowadził poprawki; wymagany jest ponowny audyt.
 
 ## 8. Git
-OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+- Zweryfikowany commit (kod, testy, dokumentacja korekty): **`08c6683e89344f0a773e71073cef7f8f8ea1beaa`** (`08c6683`) na gałęzi
+  `task/faza0-korekta1`, utworzonej z `main` = `2fcc5f7` (commit audytowany). Na nim wykonano
+  odtworzenie w czystym klonie.
+- Kolejny commit zawiera wyłącznie uzupełnienie wyników odtworzenia i identyfikatora commita w
+  `docs/PROJECT_STATE.md` i `reports/phase0/korekta1/` (bez zmian kodu, testów, konfiguracji);
+  sprawdzenie: `git diff --stat 08c6683 HEAD`.
+- `main` i `origin/main` pozostają na `2fcc5f7`. **Nie wykonano `git push`** ani scalenia do `main`
+  — oba wymagają polecenia użytkownika (zlecenie korekty).
+- Porównanie z wersją audytowaną: `git diff --stat 2fcc5f7 08c6683`.
+
+## 9. Materiały do ponownego niezależnego audytu
+| Materiał | Ścieżka |
+|---|---|
+| Raport korekty (ten plik), testy, zmiany | `reports/phase0/korekta1/KOREKTA1_RAPORT.md`, `KOREKTA1_TESTY.md`, `KOREKTA1_ZMIANY.md` |
+| Logi poleceń | `reports/phase0/korekta1/command_logs/` (01 środowisko, 02–06 kontrole, 07 czysty klon, 08 próby audytora przed/po, 09 mutacje, 10 próby dodatkowe przed/po) |
+| Stan projektu | `docs/PROJECT_STATE.md` |
+| Decyzje do rozstrzygnięcia | `docs/DECISIONS.md` (sekcja „Decyzje wymagające rozstrzygnięcia użytkownika”) |
+| Wymagania i zlecenie | `docs/requirements/` |
+| Kopia audytu 1 | `reports/phase0/audyt1/` |
+| Testy regresji | `tests/regression/test_audit1_phase0.py`, `tests/contracts/test_core_boundaries.py`, `tests/contracts/test_documentation.py` |
+| Porównanie z wersją audytowaną | `git diff 2fcc5f7 08c6683` (gałąź `task/faza0-korekta1`) |
+
+Gałąź nie została wypchnięta. Aby audytor mógł ją pobrać z GitHub, potrzebne jest polecenie
+użytkownika (`git push origin task/faza0-korekta1`).

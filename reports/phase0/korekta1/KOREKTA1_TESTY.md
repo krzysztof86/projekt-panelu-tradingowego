@@ -67,4 +67,17 @@ z jawnym komunikatem; próba A-04 daje celowo ten sam wynik (równość snapshot
 Każdą z 11 poprawek cofnięto osobno (zestaw bazowy: 588 zaliczonych) — **11/11 wykrytych**, od 1 do 18 niezaliczonych testów na mutację; pliki przywrócone bajt w bajt (`command_logs/09_mutation_check.txt`, zawiera kod skryptu). Nie jest to pełne badanie mutacyjne wszystkich możliwych zmian.
 
 ## 6. Odtworzenie w czystym środowisku
-OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+**ZALICZONE.** Nowy klon gałęzi `task/faza0-korekta1` w commicie `08c6683`, nowe `.venv`, Windows PowerShell 5.1, polecenia skopiowane dosłownie z DEVELOPMENT.md §2–§6 (`command_logs/07_clean_reproduction.txt`):
+
+| Krok | Wynik |
+|---|---|
+| `py -3.14 -m venv .venv`; `pip install --upgrade pip==26.2.2`; `pip install -c requirements-dev.lock -e ".[dev]"` | kod 0 |
+| `pytest` | **588 zaliczonych**, 0 niezaliczonych, 0 pominiętych |
+| `ruff check .` / `ruff format --check .` | bez uwag / 57 plików sformatowanych |
+| `mypy` | bez błędów (30 plików) |
+| test importu `-I` | `0.0.2 2` |
+| zainstalowane pakiety vs `requirements-dev.lock` | identyczne (17 pakietów) |
+| próby audytora (`AUDYT_FAZY0_PROBY.py`) w czystym środowisku | 12 × `ValidationError`, A-04 — równość snapshotów (zamierzone) |
+| `git status` po wszystkich krokach | czysty |
+
+Wszystkie 10 kodów wyjścia: 0.

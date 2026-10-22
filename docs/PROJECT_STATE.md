@@ -8,7 +8,7 @@
 | Aktualna faza | **FAZA 0 — korekta 1 zakończona, oczekuje na ponowny niezależny audyt.** FAZA 0 **nie została przyjęta** (audyt 1: „wymaga poprawek”). |
 | Ostatni ukończony etap | Korekta 1 FAZY 0: usterki A-01–A-07 audytu 1 i luki E-1–E-4 |
 | Następne zatwierdzone zadanie | **Ponowny niezależny audyt FAZY 0** (materiały: sekcja „Raporty”). Następnie rozstrzygnięcie decyzji PROPOSED przez użytkownika. FAZA 1 **nie jest zatwierdzona** i nie ma zdefiniowanego zakresu (OQ-07). |
-| Ostatni zweryfikowany commit | patrz sekcja 5 |
+| Ostatni zweryfikowany commit | `08c6683` (szczegóły: sekcja 5) |
 | Raporty | Korekta 1: [reports/phase0/korekta1/](../reports/phase0/korekta1/) — zacznij od `KOREKTA1_RAPORT.md`. Audyt 1: [reports/phase0/audyt1/](../reports/phase0/audyt1/). FAZA 0: [reports/phase0/](../reports/phase0/). |
 | Wymagania | [requirements/FAZA0_SPECYFIKACJA.md](requirements/FAZA0_SPECYFIKACJA.md), [requirements/FAZA0_KOREKTA1_ZLECENIE.md](requirements/FAZA0_KOREKTA1_ZLECENIE.md) |
 
@@ -36,7 +36,7 @@ silnik statusów zdarzeń, replay, Market Scanner L1, GUI PySide6. Pakiety `core
 | mypy (strict) | bez błędów (30 plików) |
 | Import pakietu (`-I`) | `0.0.2 2` |
 | Test mutacyjny korekty | 11/11 cofniętych poprawek wykrytych |
-| Odtworzenie w czystym klonie | patrz sekcja 5 i `KOREKTA1_TESTY.md` §6 |
+| Odtworzenie w czystym klonie | zaliczone (commit `08c6683`, PowerShell 5.1, 588 testów) |
 
 Szczegóły i polecenia: [reports/phase0/korekta1/KOREKTA1_TESTY.md](../reports/phase0/korekta1/KOREKTA1_TESTY.md).
 
@@ -54,7 +54,11 @@ Szczegóły i polecenia: [reports/phase0/korekta1/KOREKTA1_TESTY.md](../reports/
 
 ## 5. Stan Git
 - Gałąź robocza: `task/faza0-korekta1` (od `main` = `2fcc5f7`); `main` i `origin/main` bez zmian; **brak push**.
-- OCZEKUJE — uzupełniane w kolejnym commicie dokumentacyjnym, po odtworzeniu w czystym klonie (odtworzenie wymaga commita do sklonowania).
+- Ostatni zweryfikowany commit: **`08c6683e89344f0a773e71073cef7f8f8ea1beaa`** (`08c6683`) — kod, testy i dokumentacja korekty 1;
+  odtworzony w czystym klonie. Następny commit uzupełnia tylko ten plik i `reports/phase0/korekta1/`
+  — sprawdzenie: `git diff --stat 08c6683 HEAD`.
+- Scalenie do `main` i `git push`: wyłącznie na polecenie użytkownika.
+- Drzewo robocze po przekazaniu: czyste (`git status`).
 
 ## 6. Otwarte decyzje
 - Decyzje **PROPOSED** — wszystkie czekają na rozstrzygnięcie użytkownika; uszeregowana lista z
