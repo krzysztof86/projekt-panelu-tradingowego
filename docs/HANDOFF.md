@@ -14,7 +14,8 @@ jedynym aktualnym opisem stanu jest [PROJECT_STATE.md](PROJECT_STATE.md).
 
 ## 2. Przekazanie (koniec zadania lub fazy) — checklista
 Przed zgłoszeniem zakończenia wykonawca zapisuje w raporcie `reports/<faza>/` (dla faz:
-`reports/phase<N>/FAZA<N>_*.md`, wzór: `reports/phase0/`):
+`reports/phase<N>/FAZA<N>_*.md`, wzór: `reports/phase0/`; korekty po audycie:
+`reports/phase<N>/korekta<M>/`, kopie materiałów audytu: `reports/phase<N>/audyt<M>/`):
 
 - [ ] **Co wykonano** — lista zadań z odniesieniem do wymagań.
 - [ ] **Zmienione pliki** — ścieżki i uzasadnienie (`git diff --stat <poprzedni>..HEAD`).

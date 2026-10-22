@@ -16,6 +16,7 @@ Brak automatycznego handlu, brak prywatnych kluczy API. Szczegóły: [README.md]
 | Który plik zmienić | [docs/MODULE_MAP.md](docs/MODULE_MAP.md) |
 | Kontrakty danych | [docs/DATA_CONTRACTS.md](docs/DATA_CONTRACTS.md) |
 | Decyzje i otwarte kwestie | [docs/DECISIONS.md](docs/DECISIONS.md) |
+| Zatwierdzone wymagania (tekst źródłowy) | [docs/requirements/](docs/requirements/) |
 | Środowisko, testy, Git | [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) |
 | Przekazanie pracy | [docs/HANDOFF.md](docs/HANDOFF.md) |
 

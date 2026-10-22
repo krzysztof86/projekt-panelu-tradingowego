@@ -1,0 +1,5 @@
+# date: 2026-10-22T17:53:10Z
+# shell: Git Bash, branch task/faza0-korekta1, PYTHONOPTIMIZE unset for this process
+$ ./.venv/Scripts/python.exe -m ruff format --check .
+57 files already formatted
+# exit code: 0

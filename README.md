@@ -20,7 +20,7 @@ AGGR pozostaje osobnym narzędziem analizy Order Flow.
 Wymagania: Windows 11 x64, Python 3.14 (launcher `py`), Git.
 
 ```powershell
-git clone <adres-repozytorium> market-intelligence-desktop
+git clone https://github.com/krzysztof86/projekt-panelu-tradingowego.git market-intelligence-desktop
 cd market-intelligence-desktop
 $env:PYTHONOPTIMIZE = $null
 py -3.14 -m venv .venv
@@ -40,6 +40,7 @@ Pełna instrukcja (lint, typy, diagnostyka, zasady Git): [docs/DEVELOPMENT.md](d
 | [docs/EXCHANGE_API.md](docs/EXCHANGE_API.md) | Źródła danych i dokumentacja giełd |
 | [docs/TEST_PLAN.md](docs/TEST_PLAN.md) | Zakres testów i kryteria odbioru |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | Decyzje i otwarte kwestie |
+| [docs/requirements/](docs/requirements/) | Zatwierdzone teksty wymagań (specyfikacja FAZY 0, zlecenia korekt) |
 | [docs/MODULE_MAP.md](docs/MODULE_MAP.md) | Mapa kodu |
 | [docs/PROJECT_STATE.md](docs/PROJECT_STATE.md) | Aktualny stan prac |
 | [docs/HANDOFF.md](docs/HANDOFF.md) | Procedura przekazania pracy |

@@ -47,7 +47,7 @@ mypy działa w trybie `strict` z pluginem `pydantic.mypy` dla `src` i `tests`.
 ```powershell
 .\.venv\Scripts\python.exe -I -c "import market_intelligence, market_intelligence.core.models as m; print(market_intelligence.__version__, m.SCHEMA_VERSION)"
 ```
-Oczekiwany wynik: `0.0.1 1`. Flaga `-I` izoluje interpreter od bieżącego katalogu i zmiennych
+Oczekiwany wynik: `0.0.2 2` (wersja pakietu, wersja schematu danych). Flaga `-I` izoluje interpreter od bieżącego katalogu i zmiennych
 `PYTHON*`, więc import działa wyłącznie dzięki instalacji editable. Ten sam test wykonuje
 automatycznie `tests/contracts/test_package_import.py`.
 
@@ -78,7 +78,8 @@ Pojedyncze `# noqa` / `# type: ignore` są dopuszczalne tylko z kodem reguły i 
 1. Sprawdź w `docs/DECISIONS.md`, czy zmiana nie narusza decyzji ACCEPTED (jeśli tak — zgoda użytkownika).
 2. Zmiana niekompatybilna wstecz (usunięcie/zmiana pola, zaostrzenie walidacji, zmiana
    formatu JSON) wymaga podniesienia `SCHEMA_VERSION` w `core/models/base.py` i typu `SchemaVersion`.
-3. Dodaj/zmień testy w `tests/unit/` i `tests/contracts/`; zaktualizuj fixture'y w
+3. Dodaj/zmień testy w `tests/unit/` i `tests/contracts/` (regresje ustaleń audytów —
+   `tests/regression/`); zaktualizuj fixture'y w
    `tests/fixtures/` (dane nadal syntetyczne i tak oznaczone).
 4. Zaktualizuj `docs/DATA_CONTRACTS.md`, `docs/MODULE_MAP.md`, `CHANGELOG.md`; nową decyzję
    wpisz do `docs/DECISIONS.md`.

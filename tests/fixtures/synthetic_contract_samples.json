@@ -1,10 +1,10 @@
 {
   "synthetic": true,
   "description": "SYNTHETIC test data for Market Intelligence Desktop data contracts. All prices, quantities, timestamps and identifiers are invented and do not describe real market activity.",
-  "schema_version": 1,
+  "schema_version": 2,
   "instruments": [
     {
-      "schema_version": 1,
+      "schema_version": 2,
       "exchange": "BYBIT",
       "symbol": "ETHUSDT",
       "market_type": "USDT_LINEAR_PERPETUAL",
@@ -15,7 +15,7 @@
       "listed_at": "2021-01-01T00:00:00Z"
     },
     {
-      "schema_version": 1,
+      "schema_version": 2,
       "exchange": "BINANCE",
       "symbol": "ETHUSDT",
       "market_type": "USDT_LINEAR_PERPETUAL",
@@ -28,7 +28,7 @@
   ],
   "market_ticks": [
     {
-      "schema_version": 1,
+      "schema_version": 2,
       "instrument": {
         "exchange": "BINANCE",
         "symbol": "ETHUSDT",
@@ -47,7 +47,7 @@
   ],
   "candles": [
     {
-      "schema_version": 1,
+      "schema_version": 2,
       "instrument": {
         "exchange": "BYBIT",
         "symbol": "ETHUSDT",
@@ -72,7 +72,7 @@
   ],
   "trades": [
     {
-      "schema_version": 1,
+      "schema_version": 2,
       "instrument": {
         "exchange": "BINANCE",
         "symbol": "ETHUSDT",
@@ -95,7 +95,7 @@
   ],
   "market_events": [
     {
-      "schema_version": 1,
+      "schema_version": 2,
       "event_id": "00000000-0000-4000-8000-000000000002",
       "instrument_id": "BYBIT:USDT_LINEAR_PERPETUAL:ETHUSDT",
       "detector_id": "D2",

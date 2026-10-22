@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "market-intelligence-desktop"
-version = "0.0.1"
+version = "0.0.2"
 description = "Windows desktop application for detecting anomalies on USDT linear perpetual contracts (Bybit V5, Binance USDⓈ-M). Phase 0: core data contracts only."
 readme = "README.md"
-requires-python = ">=3.14"
+requires-python = ">=3.14,<3.15"
 dependencies = [
     "pydantic==2.14.1",
 ]

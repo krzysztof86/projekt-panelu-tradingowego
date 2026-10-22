@@ -1,0 +1,295 @@
+# Additional probes written during correction 1 to look for gaps related to A-01..A-07.
+# Findings E-1..E-4 are derived from the BEFORE run. Script source at the end of this file.
+# shell: Git Bash, PYTHONOPTIMIZE unset; date: 2026-10-22
+
+## BEFORE correction — commit 2fcc5f7
+[
+  {
+    "probe": "listed_at:bytearray_epoch",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Input should be a valid datetime [type=datetime_type, input_value=bytearray(b'1767225600'), input_type=bytearray]\n"
+  },
+  {
+    "probe": "listed_at:bytes_iso",
+    "result": "datetime.datetime(2026, 1, 1, 0, 0, tzinfo=datetime.timezone.utc)"
+  },
+  {
+    "probe": "listed_at:memoryview_iso",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Input should be a valid datetime [type=datetime_type, input_value=<memory at 0x0000025207D0F580>, input_type=memor"
+  },
+  {
+    "probe": "listed_at:date_object",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Value error, naive datetime is not accepted; timezone information is required [type=value_error, input_value=datet"
+  },
+  {
+    "probe": "listed_at:str_epoch_with_Z",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Input should be a valid datetime or date, invalid date separator, expected `-` [type=datetime_from_date_parsing, i"
+  },
+  {
+    "probe": "listed_at:str_padded_iso",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Input should be a valid datetime or date, invalid character in year [type=datetime_from_date_parsing, input_value="
+  },
+  {
+    "probe": "listed_at:str_date_only",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Value error, naive datetime is not accepted; timezone information is required [type=value_error, input_value='2026"
+  },
+  {
+    "probe": "listed_at:str_epoch_ms_float",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or an ISO 8601 string with a U"
+  },
+  {
+    "probe": "tick_size:bytes_decimal",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\ntick_size\n  Decimal input should be an integer, float, string or Decimal object [type=decimal_type, input_value=b'0.5', input_"
+  },
+  {
+    "probe": "schema_version:decimal_one_schema",
+    "result": "1"
+  },
+  {
+    "probe": "symbol:bytes",
+    "result": "'BTCUSDT'"
+  },
+  {
+    "probe": "reason:'\\x85'",
+    "result": "'a\\x85b'"
+  },
+  {
+    "probe": "reason:'\\u2028'",
+    "result": "'a\\u2028b'"
+  },
+  {
+    "probe": "reason:'\\u2029'",
+    "result": "'a\\u2029b'"
+  },
+  {
+    "probe": "reason:'\\x0b'",
+    "result": "'a\\x0bb'"
+  },
+  {
+    "probe": "reason:'\\x0c'",
+    "result": "'a\\x0cb'"
+  },
+  {
+    "probe": "reason:'\\x1e'",
+    "result": "'a\\x1eb'"
+  },
+  {
+    "probe": "reason:'\\r\\n'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  String should match pattern '^\\S(.*\\S)?$' [type=string_pattern_mismatch, input_value='a\\r\\nb', input_type=str]\n    F"
+  },
+  {
+    "probe": "candle_prec1",
+    "result": "Decimal('50000.123456789012345678901234567')"
+  },
+  {
+    "probe": "candle_traps_inexact_rounded",
+    "result": "Decimal('50000.123456789012345678901234567')"
+  },
+  {
+    "probe": "candle_emax_small",
+    "result": "Decimal('50000.123456789012345678901234567')"
+  },
+  {
+    "probe": "model_construct_nested",
+    "result": "Decimal('-1')"
+  }
+]
+
+## AFTER correction
+[
+  {
+    "probe": "listed_at:bytearray_epoch",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\n  Value error, field 'listed_at': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange"
+  },
+  {
+    "probe": "listed_at:bytes_iso",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\n  Value error, field 'listed_at': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange"
+  },
+  {
+    "probe": "listed_at:memoryview_iso",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\n  Value error, field 'listed_at': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange"
+  },
+  {
+    "probe": "listed_at:date_object",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Value error, unsupported timestamp type date; provide a timezone-aware datetime or an ISO 8601 string with a UTC o"
+  },
+  {
+    "probe": "listed_at:str_epoch_with_Z",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Input should be a valid datetime or date, invalid date separator, expected `-` [type=datetime_from_date_parsing, i"
+  },
+  {
+    "probe": "listed_at:str_padded_iso",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Input should be a valid datetime or date, invalid character in year [type=datetime_from_date_parsing, input_value="
+  },
+  {
+    "probe": "listed_at:str_date_only",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Value error, naive datetime is not accepted; timezone information is required [type=value_error, input_value='2026"
+  },
+  {
+    "probe": "listed_at:str_epoch_ms_float",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nlisted_at\n  Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or an ISO 8601 string with a U"
+  },
+  {
+    "probe": "tick_size:bytes_decimal",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\n  Value error, field 'tick_size': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange"
+  },
+  {
+    "probe": "schema_version:decimal_one_schema",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_err"
+  },
+  {
+    "probe": "symbol:bytes",
+    "exception": "ValidationError",
+    "msg": "1 validation error for Instrument\n  Value error, field 'symbol': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange': "
+  },
+  {
+    "probe": "reason:'\\x85'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='a\\x85b', input_t"
+  },
+  {
+    "probe": "reason:'\\u2028'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='a\\u2028b', input"
+  },
+  {
+    "probe": "reason:'\\u2029'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='a\\u2029b', input"
+  },
+  {
+    "probe": "reason:'\\x0b'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='a\\x0bb', input_t"
+  },
+  {
+    "probe": "reason:'\\x0c'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='a\\x0cb', input_t"
+  },
+  {
+    "probe": "reason:'\\x1e'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='a\\x1eb', input_t"
+  },
+  {
+    "probe": "reason:'\\r\\n'",
+    "exception": "ValidationError",
+    "msg": "1 validation error for DataQuality\nreason\n  String should match pattern '^\\S(.*\\S)?$' [type=string_pattern_mismatch, input_value='a\\r\\nb', input_type=str]\n    F"
+  },
+  {
+    "probe": "candle_prec1",
+    "exception": "ValidationError",
+    "msg": "4 validation errors for Candle\nopen\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_val"
+  },
+  {
+    "probe": "candle_traps_inexact_rounded",
+    "exception": "ValidationError",
+    "msg": "4 validation errors for Candle\nopen\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_val"
+  },
+  {
+    "probe": "candle_emax_small",
+    "exception": "ValidationError",
+    "msg": "4 validation errors for Candle\nopen\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_val"
+  },
+  {
+    "probe": "model_construct_nested",
+    "exception": "ValidationError",
+    "msg": "1 validation error for MarketTick\ninstrument.tick_size\n  Value error, value must be greater than zero [type=value_error, input_value=Decimal('-1'), input_type=D"
+  }
+]
+
+## Script: extra_probes.py
+"""Additional probes beyond the audit: related input-type and context gaps."""
+
+import json
+from datetime import date
+from decimal import Decimal, Inexact, Rounded, localcontext
+
+from market_intelligence.core.models import Candle, DataQuality, Instrument, MarketTick
+
+results = []
+
+
+def check(name, fn):
+    try:
+        results.append({"probe": name, "result": repr(fn())})
+    except Exception as exc:
+        results.append({"probe": name, "exception": type(exc).__name__, "msg": str(exc)[:160]})
+
+
+ik = dict(
+    exchange="BYBIT", symbol="BTCUSDT", market_type="USDT_LINEAR_PERPETUAL", base_asset="BTC",
+    quote_asset="USDT", status="TRADING", tick_size="0.10",
+)
+i = Instrument(**ik)
+
+for name, value in [
+    ("bytearray_epoch", bytearray(b"1767225600")),
+    ("bytes_iso", b"2026-01-01T00:00:00Z"),
+    ("memoryview_iso", memoryview(b"2026-01-01T00:00:00Z")),
+    ("date_object", date(2026, 1, 1)),
+    ("str_epoch_with_Z", "1767225600Z"),
+    ("str_padded_iso", " 2026-01-01T00:00:00Z "),
+    ("str_date_only", "2026-01-01"),
+    ("str_epoch_ms_float", "1767225600000.5"),
+]:
+    check(f"listed_at:{name}", lambda v=value: Instrument(**(ik | {"listed_at": v})).listed_at)
+
+for name, value in [
+    ("bytes_decimal", b"0.5"),
+    ("decimal_one_schema", Decimal(1)),
+]:
+    field = "schema_version" if "schema" in name else "tick_size"
+    check(f"{field}:{name}", lambda v=value, f=field: getattr(Instrument(**(ik | {f: v})), f))
+
+check("symbol:bytes", lambda: Instrument(**(ik | {"symbol": b"BTCUSDT"})).symbol)
+
+for sep in ["\x85", " ", " ", "\x0b", "\x0c", "\x1e", "\r\n"]:
+    check(f"reason:{sep!r}", lambda s=sep: DataQuality(status="GAP", reason=f"a{s}b").reason)
+
+
+def candle_under(ctx_kwargs, traps=()):
+    with localcontext(**ctx_kwargs) as ctx:
+        for trap in traps:
+            ctx.traps[trap] = True
+        return Candle(
+            instrument=i, interval="1m", start="2026-01-05T12:00:00Z", end="2026-01-05T12:01:00Z",
+            open="50000.123456789012345678901234567", high="50000.123456789012345678901234567",
+            low="50000.123456789012345678901234567", close="50000.123456789012345678901234567",
+            turnover_usdt="0", is_closed=True, source="SYNTHETIC", quality=DataQuality.valid(),
+        ).open
+
+
+check("candle_prec1", lambda: candle_under({"prec": 1}))
+check("candle_traps_inexact_rounded", lambda: candle_under({"prec": 5}, (Inexact, Rounded)))
+check("candle_emax_small", lambda: candle_under({"Emax": 2, "Emin": -2}))
+
+bad = Instrument.model_construct(**(ik | {"tick_size": Decimal("-1")}))
+check(
+    "model_construct_nested",
+    lambda: MarketTick(
+        instrument=bad, last_price="1", received_at="2026-01-05T12:00:00Z", source="SYNTHETIC",
+        quality=DataQuality.valid(),
+    ).instrument.tick_size,
+)
+
+print(json.dumps(results, indent=2, ensure_ascii=False))

@@ -7,6 +7,7 @@ from importlib import metadata
 from pathlib import Path
 
 import market_intelligence
+from market_intelligence.core.models import SCHEMA_VERSION
 
 DIST_NAME = "market-intelligence-desktop"
 SRC_DIR = Path(__file__).resolve().parents[2] / "src"
@@ -39,15 +40,21 @@ def test_import_in_isolated_interpreter(tmp_path: Path) -> None:
         check=False,
     )
     assert result.returncode == 0, result.stderr
-    assert result.stdout.split() == [market_intelligence.__version__, "1"]
+    assert result.stdout.split() == [market_intelligence.__version__, str(SCHEMA_VERSION)]
 
 
-def test_core_has_no_io_dependencies() -> None:
-    """Phase 0 core must not import network, GUI or database libraries."""
+def test_core_import_does_not_load_io_libraries() -> None:
+    """Limited dependency check (A-05): importing every core package loads no I/O library.
+
+    This inspects ``sys.modules`` only. It does not prove the absence of I/O; see
+    ``test_core_boundaries.py`` for the import-boundary scan and the runtime guard.
+    """
     code = (
-        "import sys, market_intelligence.core.models; "
+        "import sys, market_intelligence.core, market_intelligence.core.models, "
+        "market_intelligence.core.clock, market_intelligence.core.config, "
+        "market_intelligence.core.events; "
         "banned = {'socket', 'ssl', 'http', 'urllib', 'sqlite3', 'PySide6', 'requests', "
-        "'websockets', 'aiohttp', 'httpx'}; "
+        "'websockets', 'aiohttp', 'httpx', 'asyncio', 'selectors', 'subprocess'}; "
         "print(sorted(banned & {name.split('.')[0] for name in sys.modules}))"
     )
     result = subprocess.run(

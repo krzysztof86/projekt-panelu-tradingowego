@@ -6,4 +6,4 @@ Phase 0 contains only the core data contracts in ``market_intelligence.core.mode
 See ``docs/PROJECT_STATE.md`` for what is implemented and what is planned.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.2"

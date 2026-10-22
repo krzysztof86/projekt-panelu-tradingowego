@@ -38,6 +38,12 @@
 HTTP 202 oznacza, że serwis zwrócił stronę kontroli klientów automatycznych; treść nie została
 potwierdzona (log: `reports/phase0/command_logs/08_exchange_doc_urls.txt`). Otwarta kwestia OQ-12.
 
+Audyt 1 FAZY 0 (2026-10-22) odczytał strony Bybit Kline i Bybit public Trade i potwierdził: obrót
+(`turnover`) świec kontraktów USDT jest w walucie kwotowanej, a pole `S` transakcji oznacza stronę
+takera. Nie potwierdza to mapowania statusów ani granic świec. Strony Binance przekierowały do
+treści ogólnej — formaty Binance pozostają niezweryfikowane
+([reports/phase0/audyt1/AUDYT_FAZY0.md](../reports/phase0/audyt1/AUDYT_FAZY0.md), §7).
+
 ## 4. Mapowanie na kontrakty — obowiązki przyszłych konektorów (PROPOSED)
 Poniższe punkty to **założenia do weryfikacji**, nie fakty potwierdzone dokumentacją w FAZIE 0.
 | Kontrakt | Obowiązek konektora |
@@ -46,7 +52,8 @@ Poniższe punkty to **założenia do weryfikacji**, nie fakty potwierdzone dokum
 | `Instrument.status` | zmapować status giełdowy na `ContractStatus` (tabela mapowania: DEC-012, OQ-03) |
 | `Instrument.market_type` | odfiltrować wszystko poza USDT linear perpetual (Spot, COIN-M/inverse, USDC, kontrakty terminowe z datą) |
 | czasy | zamienić epoch (ms) na świadomy `datetime` UTC jawnie, po stronie konektora |
-| liczby | przekazywać wartości tekstowe z API jako `str`/`Decimal`, nigdy przez `float` |
+| liczby | przekazywać wartości tekstowe z API jako `str`/`Decimal`, nigdy przez `float`; wartości muszą mieścić się w dziedzinie DEC-020 (≤ 18 miejsc po przecinku, \|x\| < 1E+20) — zgodność do sprawdzenia (OQ-14) |
+| dane binarne | dekodować `bytes` jawnie przed utworzeniem kontraktu (kontrakty odrzucają dane binarne, DEC-004) |
 | `Trade.aggressor_side` | zmapować stronę takera na `BUY`/`SELL` (pola giełdowe do weryfikacji) |
 | `Trade.trade_id` | przekazać jako tekst |
 | `Trade.value_usdt` | wyliczyć `price * quantity` w `Decimal` |

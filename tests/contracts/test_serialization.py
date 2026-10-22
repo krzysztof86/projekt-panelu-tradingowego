@@ -56,7 +56,14 @@ def test_json_round_trip(samples: list[BaseModel]) -> None:
 
 @pytest.mark.parametrize(
     "value",
-    ["0.00000001", "50000.10", "1E-12", "123456789012345678901234567890.123456789", "0.10"],
+    [
+        "0.00000001",
+        "50000.10",
+        "1E-12",
+        "0.10",
+        "0.000000000000000001",  # smallest domain value (18 decimal places)
+        "99999999999999999999.999999999999999999",  # largest domain value (38 digits)
+    ],
 )
 def test_decimal_survives_json_exactly(instrument_kwargs: dict[str, Any], value: str) -> None:
     instrument = Instrument(**{**instrument_kwargs, "tick_size": value})
@@ -101,14 +108,14 @@ def test_market_event_metrics_round_trip_as_tuples(event_kwargs: dict[str, Any])
 
 class TestSchemaVersion:
     def test_current_version(self) -> None:
-        assert SCHEMA_VERSION == 1
+        assert SCHEMA_VERSION == 2
 
     def test_present_in_every_record(self, samples: list[BaseModel]) -> None:
         for sample in samples:
             if isinstance(sample, VersionedContractModel):
                 assert json.loads(sample.model_dump_json())["schema_version"] == SCHEMA_VERSION
 
-    @pytest.mark.parametrize("version", [0, 2, "1", None])
+    @pytest.mark.parametrize("version", [0, 1, 3, "2", None])
     def test_other_versions_rejected(self, bybit_instrument: Instrument, version: Any) -> None:
         data = json.loads(bybit_instrument.model_dump_json())
         data["schema_version"] = version

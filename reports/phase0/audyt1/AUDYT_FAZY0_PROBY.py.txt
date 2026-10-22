@@ -1,0 +1,44 @@
+import json
+from decimal import Decimal, Inexact, ROUND_UP, localcontext
+from pydantic import ValidationError
+from market_intelligence.core.models import Instrument, Trade, DataQuality, MarketTick
+
+results = []
+def check(name, fn):
+    try:
+        results.append({'probe': name, 'result': fn()})
+    except Exception as exc:
+        results.append({'probe': name, 'exception': type(exc).__name__, 'message': str(exc)[:250]})
+
+ik = dict(exchange='BYBIT', symbol='BTCUSDT', market_type='USDT_LINEAR_PERPETUAL', base_asset='BTC', quote_asset='USDT', status='TRADING', tick_size='0.10')
+i = Instrument(**ik)
+tk = dict(instrument=i, trade_id='synthetic-audit', price='1', quantity='1', value_usdt='1', aggressor_side='BUY', executed_at='2026-01-05T12:00:00Z', received_at='2026-01-05T12:00:00Z', source='SYNTHETIC', quality=DataQuality.valid())
+p = '1.' + '0' * 99 + '1'
+check('rounded_wrong_trade_accepted', lambda: str(Trade(**(tk | dict(price=p, value_usdt='1'))).value_usdt))
+check('exact_trade_rejected', lambda: str(Trade(**(tk | dict(price=p, value_usdt=p))).value_usdt))
+def rounding():
+    with localcontext(rounding=ROUND_UP):
+        return str(Trade(**(tk | dict(price=p, value_usdt='1'))).value_usdt)
+check('same_payload_with_ROUND_UP', rounding)
+def inexact():
+    with localcontext() as ctx:
+        ctx.traps[Inexact] = True
+        return str(Trade(**(tk | dict(price=p, value_usdt='1'))).value_usdt)
+check('same_payload_with_Inexact_trap', inexact)
+check('large_exponent_exact_trade', lambda: str(Trade(**(tk | dict(price='1e999999', quantity='10', value_usdt='1e1000000'))).value_usdt))
+check('carriage_return_reason', lambda: repr(DataQuality(status='GAP', reason='first\rsecond').reason))
+check('schema_version_true', lambda: Instrument(**(ik | dict(schema_version=True))).schema_version)
+check('schema_version_float_one', lambda: Instrument(**(ik | dict(schema_version=1.0))).schema_version)
+check('json_schema_version_true', lambda: Instrument.model_validate_json(json.dumps(ik | dict(schema_version=True))).schema_version)
+check('json_schema_version_float_one', lambda: Instrument.model_validate_json(json.dumps(ik | dict(schema_version=1.0))).schema_version)
+check('numeric_timestamp_bytes', lambda: Instrument(**(ik | dict(listed_at=b'1767225600'))).listed_at.isoformat())
+def identity():
+    other = Instrument(**(ik | dict(status='CLOSED', tick_size='0.01')))
+    return dict(same_id=i.instrument_id == other.instrument_id, equal=i == other, set_size=len({i, other}))
+check('instrument_metadata_change', identity)
+def copy():
+    bad = i.model_copy(update={'tick_size': Decimal('-1')})
+    tick = MarketTick(instrument=bad, last_price='1', received_at='2026-01-05T12:00:00Z', source='SYNTHETIC', quality=DataQuality.valid())
+    return str(tick.instrument.tick_size)
+check('unchecked_copy_accepted_nested', copy)
+print(json.dumps(results, indent=2, ensure_ascii=False))

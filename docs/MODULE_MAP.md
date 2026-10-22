@@ -13,9 +13,11 @@
 | Jakość danych | `core/models/data_quality.py` |
 | Zdarzenie / metryki | `core/models/market_event.py` |
 | Wartości enumeracji | `core/models/enums.py` |
-| Reguły Decimal / czasu / symboli | `core/models/types.py` |
+| Reguły Decimal / dziedzinę / czasu / symboli / tekstu przyczyny | `core/models/types.py` |
 | Normalizację UTC | `core/clock/utc.py` |
-| Wersję schematu, wspólną konfigurację modeli | `core/models/base.py` |
+| Wersję schematu, wspólną konfigurację modeli, `replace`/`model_copy`, odrzucanie danych binarnych | `core/models/base.py` |
+| Dokładne obliczenie wartości transakcji | `core/models/trade.py` (`_exact_product`) |
+| Dozwolone importy w `core` (kontrola granic) | `tests/contracts/test_core_boundaries.py` (`ALLOWED_TOP_LEVEL_IMPORTS`) |
 | Eksport publicznego API modeli | `core/models/__init__.py` |
 | Wersję pakietu | `__init__.py` **i** `pyproject.toml` (muszą być zgodne — test) |
 
@@ -27,8 +29,11 @@
 - Zależności: brak. Testy: `tests/contracts/test_package_import.py`. Dokumentacja: README.md.
 
 ### `core` (`core/__init__.py`) — ISTNIEJE
-- Odpowiedzialność: warstwa bez I/O — kontrakty i prymitywy.
-- Ograniczenia: zakaz importu sieci, GUI, bazy danych (test `test_core_has_no_io_dependencies`).
+- Odpowiedzialność: warstwa bez aplikacyjnego I/O — kontrakty i prymitywy.
+- Ograniczenia: tylko importy z listy dozwolonych; brak wywołań `open`/`exec`/`eval`; brak I/O
+  w czasie wykonania (ograniczone kontrole, DEC-023).
+- Testy: `tests/contracts/test_core_boundaries.py`,
+  `tests/contracts/test_package_import.py::test_core_import_does_not_load_io_libraries`.
 - Dokumentacja: ARCHITECTURE.md §3.
 
 ### `core.clock` (`core/clock/utc.py`) — ISTNIEJE
@@ -40,17 +45,26 @@
 - Dokumentacja: DATA_CONTRACTS.md §1, DEC-004.
 
 ### `core.models.base` — ISTNIEJE
-- Odpowiedzialność: bazowa konfiguracja kontraktów i wersja schematu.
-- Interfejs: `ContractModel`, `VersionedContractModel`, `SCHEMA_VERSION` (=1), `SchemaVersion`.
+- Odpowiedzialność: bazowa konfiguracja kontraktów, wersja schematu, bezpieczne tworzenie
+  zmienionych rekordów, odrzucanie danych binarnych.
+- Interfejs: `ContractModel` (`replace(**zmiany)`, walidujące `model_copy(update=...)`),
+  `VersionedContractModel`, `SCHEMA_VERSION` (=2), `SchemaVersion` (ścisła liczba całkowita).
+- Ograniczenia: `revalidate_instances="always"`; `model_construct` zakazany w `src/` (DEC-021).
 - Zależności: pydantic. Testy: `tests/contracts/test_serialization.py::TestSchemaVersion`,
-  `tests/unit/test_instrument.py::TestImmutability`. Dokumentacja: DEC-005.
+  `tests/unit/test_instrument.py::TestImmutability`, `tests/regression/test_audit1_phase0.py`
+  (`TestA02SchemaVersion`, `TestA07SafeModification`, `TestE3BinaryInputRejected`).
+  Dokumentacja: DATA_CONTRACTS.md §1.2, DEC-005, DEC-021, DEC-022.
 
 ### `core.models.types` — ISTNIEJE
-- Odpowiedzialność: typy pól z walidacją.
+- Odpowiedzialność: typy pól z walidacją i dziedzina wartości Decimal.
 - Interfejs: `FiniteDecimal`, `PositiveDecimal`, `NonNegativeDecimal`, `UtcDatetime`,
-  `ExchangeSymbol`, `AssetCode`, `ReasonText`.
-- Wejście: `Decimal|int|str` (liczby), `datetime|str ISO z przesunięciem` (czas). Wyjście: `Decimal`, `datetime` UTC.
-- Zależności: pydantic, `core.clock`. Testy: `tests/unit/test_primitives.py`. Dokumentacja: DATA_CONTRACTS.md §1, DEC-003, DEC-004.
+  `ExchangeSymbol`, `AssetCode`, `ReasonText`; stałe `MAX_DECIMAL_PLACES` (18), `MAX_INTEGER_DIGITS` (20).
+- Wejście: `Decimal|int|str` (liczby, ≤ 18 miejsc po przecinku, \|x\| < 1E+20), wyłącznie
+  `datetime|str ISO z przesunięciem` (czas). Wyjście: `Decimal`, `datetime` UTC.
+- Ograniczenia: tylko operacje Decimal niezależne od kontekstu.
+- Zależności: pydantic, `core.clock`. Testy: `tests/unit/test_primitives.py`,
+  `tests/regression/test_audit1_phase0.py` (`TestA01FinancialDomain`, `TestA03TimestampInputTypes`,
+  `TestA06ReasonSingleLine`). Dokumentacja: DATA_CONTRACTS.md §1–§1.1, DEC-003, DEC-004, DEC-009, DEC-020.
 
 ### `core.models.enums` — ISTNIEJE
 - Interfejs: `Exchange`, `MarketType`, `ContractStatus`, `DataSource`, `DataQualityStatus`,
@@ -64,8 +78,10 @@
 
 ### `core.models.instrument` — ISTNIEJE
 - Interfejs: `Instrument`, `.instrument_id`, typ `InstrumentId`.
-- Ograniczenia: tylko `USDT_LINEAR_PERPETUAL`, quote `USDT`, symbol dosłownie.
-- Testy: `tests/unit/test_instrument.py`. Dokumentacja: DATA_CONTRACTS.md §3, DEC-006.
+- Ograniczenia: tylko `USDT_LINEAR_PERPETUAL`, quote `USDT`, symbol dosłownie. Tożsamość domenowa =
+  `instrument_id`; `==`/`hash` porównują cały snapshot (DEC-006).
+- Testy: `tests/unit/test_instrument.py`, `tests/regression/test_audit1_phase0.py::TestA04InstrumentIdentity`.
+  Dokumentacja: DATA_CONTRACTS.md §3, DEC-006.
 
 ### `core.models.market_tick` — ISTNIEJE
 - Interfejs: `MarketTick`. Zależności: `instrument`, `data_quality`, `types`, `enums`.
@@ -78,8 +94,10 @@
 
 ### `core.models.trade` — ISTNIEJE
 - Interfejs: `Trade`, typ `TradeId`.
-- Ograniczenia: `value_usdt == price * quantity`.
-- Testy: `tests/unit/test_trade.py`. Dokumentacja: DATA_CONTRACTS.md §7, DEC-010.
+- Ograniczenia: `value_usdt == price * quantity` dokładnie, w prywatnym kontekście `decimal`
+  niezależnym od wywołującego.
+- Testy: `tests/unit/test_trade.py`, `tests/regression/test_audit1_phase0.py::TestA01ExactProduct`.
+  Dokumentacja: DATA_CONTRACTS.md §7, DEC-010, DEC-020.
 
 ### `core.models.market_event` — ISTNIEJE
 - Interfejs: `MarketEvent`, `MetricValue`.
@@ -110,5 +128,6 @@ Tylko `__init__.py`. Przeznaczenie (PLANOWANE): cykl życia i historia `MarketEv
 |---|---|
 | `tests/conftest.py` | syntetyczne fixture'y |
 | `tests/unit/` | testy modeli i prymitywów |
-| `tests/contracts/` | serializacja, schemat, fixture'y, import |
+| `tests/contracts/` | serializacja, schemat, fixture'y, import, granice `core` (I/O), odnośniki dokumentacji |
+| `tests/regression/` | testy regresji ustaleń audytów (`test_audit1_phase0.py`: A-01–A-07, E-1–E-4) |
 | `tests/fixtures/synthetic_contract_samples.json` | syntetyczne rekordy JSON |

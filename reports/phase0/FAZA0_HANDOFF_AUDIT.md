@@ -31,7 +31,7 @@ ostatni zweryfikowany commit. Wartości zgodne z `FAZA0_TESTY.md`. **OK** (commi
 w commicie dokumentacyjnym — patrz FAZA0_RAPORT.md §5).
 
 ## 4. Kompletność MODULE_MAP.md
-Każdy istniejący moduł (14 plików `.py` w `src/`) ma ścieżkę, odpowiedzialność, interfejs,
+Każdy istniejący moduł (16 plików `.py` w `src/`; erratum z korekty 1 — pierwotnie błędnie podano 14) ma ścieżkę, odpowiedzialność, interfejs,
 zależności, ograniczenia, testy i dokumentację; wejścia/wyjścia podano tam, gdzie moduł
 przetwarza dane. Moduły przyszłe oznaczone PLANOWANE, pakiety puste — ZAREZERWOWANY.
 Tabela „chcę zmienić…” wskazuje plik bez przeglądania repozytorium. **OK.**

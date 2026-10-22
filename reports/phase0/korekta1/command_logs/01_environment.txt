@@ -1,0 +1,16 @@
+# date: 2026-10-22T17:50:23Z
+# Correction 1 starting point and environment
+$ git rev-parse HEAD (before correction, on main)
+2fcc5f76fc171a6f7b10b5e5333ebd11df16c226  (= audited commit; working tree clean; origin/main identical; diff vs audited commit: 0 lines)
+$ git branch --show-current
+task/faza0-korekta1
+$ python --version
+Python 3.14.5
+$ python -m pip --version
+pip 26.2.2 from <REPO>\.venv\Lib\site-packages\pip (python 3.14)
+
+$ git --version
+git version 2.53.0.windows.1
+$ pip freeze --exclude-editable vs requirements-dev.lock
+identical
+# OS: Windows 11 Home 10.0.26200 x64 (unchanged since Phase 0, see ../../command_logs/01_environment.txt)

@@ -35,10 +35,10 @@ class TestValue:
         assert trade.value_usdt == Decimal("100.0002")
 
     def test_high_precision_product_is_exact(self, trade_kwargs: dict[str, Any]) -> None:
-        # The exact product has 37 significant digits; the default Decimal context
-        # (28 digits) would round it, so this checks that no rounding happens.
-        price, quantity = "12345678901234.123456789", "98765.4321098765"
-        value = "1219326311370173524.1425500838478765585"
+        # The exact product has 38 significant digits (the domain maximum); the default
+        # Decimal context (28 digits) would round it, so this checks that no rounding happens.
+        price, quantity = "1234567890.123456789", "9876543210.987654321"
+        value = "12193263113702179522.374638011112635269"
         trade = Trade(**{**trade_kwargs, "price": price, "quantity": quantity, "value_usdt": value})
         assert trade.value_usdt == Decimal(value)
 

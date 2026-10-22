@@ -12,7 +12,8 @@
 |---|---|
 | `tests/conftest.py` | Wspólne syntetyczne fixture'y (instrumenty, kwargs każdego modelu) |
 | `tests/unit/` | Walidacja pojedynczych modeli i prymitywów |
-| `tests/contracts/` | Serializacja JSON, wersja schematu, fixture'y JSON, import po instalacji editable, brak zależności I/O w `core` |
+| `tests/contracts/` | Serializacja JSON, wersja schematu, fixture'y JSON, import po instalacji editable, granice `core` (importy, wywołania, strażnik I/O w czasie wykonania), odnośniki dokumentacji |
+| `tests/regression/` | Regresje ustaleń audytów: `test_audit1_phase0.py` (A-01–A-07, E-1–E-4) |
 | `tests/fixtures/` | `synthetic_contract_samples.json` — przykładowe rekordy wszystkich kontraktów |
 
 ## 3. Pokrycie wymagań FAZY 0
@@ -53,10 +54,34 @@ Przed uruchomieniem: `$env:PYTHONOPTIMIZE = $null` (DEVELOPMENT.md §9).
 ## 5. Kryteria odbioru FAZY 0
 1. Wszystkie testy zaliczone; 0 niezaliczonych, 0 pominiętych.
 2. Ruff lint i format check bez uwag; mypy strict bez błędów.
-3. Test importu zwraca `0.0.1 1`.
+3. Test importu zwraca `0.0.2 2`.
 4. Odtworzenie środowiska od zera z czystego klonu repozytorium wg DEVELOPMENT.md daje ten sam wynik.
-5. Wyniki zapisane w `reports/phase0/FAZA0_TESTY.md` z logami w `reports/phase0/command_logs/`.
+5. Wyniki zapisane w raporcie fazy (`reports/phase0/FAZA0_TESTY.md`; po korekcie 1:
+   `reports/phase0/korekta1/KOREKTA1_TESTY.md`) z logami w katalogu `command_logs/` raportu.
+6. Wszystkie testy regresji ustaleń audytu zaliczone (§7); żadne ustalenie nie jest zamknięte bez testu
+   albo jawnego uzasadnienia w raporcie korekty.
 
 ## 6. Dodatkowa weryfikacja jakości testów
 Test mutacyjny (ręczny): wyłączenie każdej kluczowej reguły walidacji musi spowodować
 niepowodzenie co najmniej jednego testu. Wynik FAZY 0: `reports/phase0/command_logs/09_mutation_check.txt`.
+Wynik korekty 1 (cofnięcie każdej poprawki osobno, 11 mutacji):
+`reports/phase0/korekta1/command_logs/09_mutation_check.txt`. Test mutacyjny jest wykonywany na
+zielonym zestawie bazowym; nie jest pełnym badaniem mutacyjnym wszystkich możliwych zmian.
+
+## 7. Regresje audytu 1 FAZY 0
+Plik: `tests/regression/test_audit1_phase0.py`. Ustalenia: `reports/phase0/audyt1/AUDYT_FAZY0.md`.
+
+| Ustalenie | Klasa testów | Co sprawdza |
+|---|---|---|
+| A-01 dziedzina | `TestA01FinancialDomain` | próby audytora (101 miejsc, `1e999999`) → `ValidationError`; granice dziedziny przyjmowane, przekroczenia odrzucane; wartości ujemne metryk |
+| A-01 dokładność | `TestA01ExactProduct` | iloczyn 38 cyfr; wynik zaokrąglony kontekstem 28 cyfr odrzucony; 6 wrogich kontekstów `decimal` (precyzja, zaokrąglanie, pułapki, wykładniki) — ten sam wynik i tylko `ValidationError`; kontekst wywołującego niezmieniony; 300 losowych przypadków z wyrocznią `Fraction` |
+| A-02 | `TestA02SchemaVersion` | 5 modeli × ścieżka Python i JSON × `true`, `false`, `1.0`, `2.0`, `0`, `1`, `3`, `"2"`, `null`; `Decimal` |
+| A-03 | `TestA03TimestampInputTypes` | `bytes` (epoch i ISO), `bytearray`, `memoryview`, `date`, `time`, `Decimal`, lista; `bytes` w każdym modelu; jawny komunikat dla nieobsługiwanych typów |
+| A-04 | `TestA04InstrumentIdentity` | zmiana metadanych przy stałym `instrument_id`: równe ID, różne snapshoty, kolekcja kluczowana ID |
+| A-05 | `tests/contracts/test_core_boundaries.py` | lista dozwolonych importów, zakazane wywołania, brak `model_construct` w `src/`, strażnik I/O w czasie wykonania |
+| A-06 | `TestA06ReasonSingleLine` | 11 separatorów linii z `str.splitlines()` w `DataQuality.reason` i `MarketEvent.rejection_reason`; tabulator dozwolony |
+| A-07 | `TestA07SafeModification` | `model_copy(update=...)`, `copy.replace`, `replace` walidują; nieznane pola odrzucane; zagnieżdżone instancje z `model_construct` (Instrument, DataQuality, MetricValue) odrzucane; zmiana statusu zdarzenia sprawdza niezmienniki |
+| E-1, E-3 | `TestE3BinaryInputRejected`, `TestA03TimestampInputTypes` | dane binarne (także ISO jako `bytes`) w polach czasu, tekstowych, enumach, liczbach i identyfikatorach |
+| E-2 | `TestA02SchemaVersion::test_decimal_marker_rejected` | `Decimal` jako znacznik wersji |
+| E-4 | `TestA06ReasonSingleLine` | separatory Unicode (U+0085, U+2028, U+2029, VT, FF, U+001C–U+001E) |
+| Rekomendacja §5 | `tests/contracts/test_documentation.py` | odnośniki względne, kotwice i ścieżki w backtickach we wszystkich `.md` |
