@@ -78,6 +78,9 @@ Pojedyncze `# noqa` / `# type: ignore` są dopuszczalne tylko z kodem reguły i 
 1. Sprawdź w `docs/DECISIONS.md`, czy zmiana nie narusza decyzji ACCEPTED (jeśli tak — zgoda użytkownika).
 2. Zmiana niekompatybilna wstecz (usunięcie/zmiana pola, zaostrzenie walidacji, zmiana
    formatu JSON) wymaga podniesienia `SCHEMA_VERSION` w `core/models/base.py` i typu `SchemaVersion`.
+   **Wyjątek (DEC-026):** schemat fazy jeszcze nieprzyjętej, bez trwale zapisanych danych, można
+   korygować bez podnoszenia wersji; zmianę opisz w `CHANGELOG.md` i historii schematu w
+   `docs/DATA_CONTRACTS.md`. Po odbiorze fazy lub po pierwszym trwałym zapisie danych wyjątek nie obowiązuje.
 3. Dodaj/zmień testy w `tests/unit/` i `tests/contracts/` (regresje ustaleń audytów —
    `tests/regression/`); zaktualizuj fixture'y w
    `tests/fixtures/` (dane nadal syntetyczne i tak oznaczone).

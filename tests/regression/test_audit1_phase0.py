@@ -239,10 +239,11 @@ class TestA01ExactProduct:
             with pytest.raises(ValidationError):
                 Trade(**{**payload, "value_usdt": wrong})
 
-    def test_product_needing_more_than_18_places_has_no_valid_value(
+    def test_small_product_rounded_to_18_places_rejected(
         self, trade_kwargs: dict[str, Any]
     ) -> None:
-        # 0.0000000001 * 0.0000000001 = 1E-20: not representable in the domain.
+        # 0.0000000001 * 0.0000000001 = 1E-20. Since the DEC-020 split (correction 2) the exact
+        # value is accepted (test_audit2_phase0.py); values rounded to 18 places stay rejected.
         payload = {**trade_kwargs, "price": "0.0000000001", "quantity": "0.0000000001"}
         for value in ["0.000000000000000000", "0.000000000000000001"]:
             with pytest.raises(ValidationError):
@@ -311,6 +312,13 @@ class TestA02SchemaVersion:
 
 
 # ---------------------------------------------------------------- A-03
+def _stable_id(value: Any) -> str:
+    """Deterministic test id: repr() of a memoryview contains a memory address."""
+    if isinstance(value, memoryview):
+        return f"memoryview({bytes(value)!r})"
+    return repr(value)
+
+
 UNSUPPORTED_TIMESTAMPS: list[Any] = [
     b"1767225600",
     b"2026-01-01T00:00:00Z",
@@ -324,7 +332,7 @@ UNSUPPORTED_TIMESTAMPS: list[Any] = [
 
 
 class TestA03TimestampInputTypes:
-    @pytest.mark.parametrize("value", UNSUPPORTED_TIMESTAMPS, ids=repr)
+    @pytest.mark.parametrize("value", UNSUPPORTED_TIMESTAMPS, ids=_stable_id)
     def test_unsupported_types_rejected(
         self, instrument_kwargs: dict[str, Any], value: Any
     ) -> None:

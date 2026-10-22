@@ -1,0 +1,291 @@
+# Correction 2 probes (script source at the end). shell: Git Bash, PYTHONOPTIMIZE unset; date: 2026-10-22
+$ python -I k2_probes.py
+
+## BEFORE — f0c36e9 (audited HEAD)
+[
+  {
+    "input": ".5",
+    "python": "ACCEPTED 1970-01-01T00:00:00.500000+00:00",
+    "json": "ACCEPTED 1970-01-01T00:00:00.500000+00:00"
+  },
+  {
+    "input": "+.5",
+    "python": "ACCEPTED 1970-01-01T00:00:00.500000+00:00",
+    "json": "ACCEPTED 1970-01-01T00:00:00.500000+00:00"
+  },
+  {
+    "input": "-.5",
+    "python": "ACCEPTED 1969-12-31T23:59:59.500000+00:00",
+    "json": "ACCEPTED 1969-12-31T23:59:59.500000+00:00"
+  },
+  {
+    "input": ".5e3",
+    "python": "ACCEPTED 1970-01-01T00:08:20+00:00",
+    "json": "ACCEPTED 1970-01-01T00:08:20+00:00"
+  },
+  {
+    "input": ".5E+3",
+    "python": "ACCEPTED 1970-01-01T00:08:20+00:00",
+    "json": "ACCEPTED 1970-01-01T00:08:20+00:00"
+  },
+  {
+    "input": "-.5e-1",
+    "python": "ACCEPTED 1969-12-31T23:59:59.950000+00:00",
+    "json": "ACCEPTED 1969-12-31T23:59:59.950000+00:00"
+  },
+  {
+    "input": "2026-01-01 00:00:00+00:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00z",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00+0100",
+    "python": "ACCEPTED 2025-12-31T23:00:00+00:00",
+    "json": "ACCEPTED 2025-12-31T23:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.123456789Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.123456+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.123456+00:00"
+  },
+  {
+    "input": "2026-01-01T24:00:00Z",
+    "python": "ValidationError: Input should be a valid datetime or date, unexpected extra characters at the end of the in",
+    "json": "ValidationError: Input should be a valid datetime or date, unexpected extra characters at the end of the in"
+  },
+  {
+    "input": "2026-01-01T00:00:60Z",
+    "python": "ValidationError: Input should be a valid datetime or date, unexpected extra characters at the end of the in",
+    "json": "ValidationError: Input should be a valid datetime or date, unexpected extra characters at the end of the in"
+  },
+  {
+    "input": "20260101T000000Z",
+    "python": "ValidationError: Input should be a valid datetime or date, invalid date separator, expected `-` [type=datet",
+    "json": "ValidationError: Input should be a valid datetime or date, invalid date separator, expected `-` [type=datet"
+  },
+  {
+    "input": "2026-01-01",
+    "python": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_",
+    "json": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_"
+  },
+  {
+    "input": "2026-01-01T00:00:00Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.5Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.500000+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.500000+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.123456Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.123456+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.123456+00:00"
+  },
+  {
+    "input": "2026-01-01T01:00:00+01:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2025-12-31T19:00:00-05:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00",
+    "python": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_",
+    "json": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_"
+  },
+  {
+    "input": "Trade 1E-10 x 1E-10 = 1E-20",
+    "python": "ValidationError: Value error, at most 18 digits after the decimal point are allowed (including trailing zer"
+  }
+]
+
+## AFTER — correction 2 working tree
+[
+  {
+    "input": ".5",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "+.5",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "-.5",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": ".5e3",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": ".5E+3",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "-.5e-1",
+    "python": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex",
+    "json": "ValidationError: Value error, numeric timestamps are not accepted; provide a timezone-aware datetime or tex"
+  },
+  {
+    "input": "2026-01-01 00:00:00+00:00",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00+0100",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00.123456789Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T24:00:00Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:60Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "20260101T000000Z",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01",
+    "python": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,",
+    "json": "ValidationError: Value error, timestamp text must have the form YYYY-MM-DDTHH:MM:SS[.ffffff] followed by Z,"
+  },
+  {
+    "input": "2026-01-01T00:00:00Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.5Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.500000+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.500000+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00.123456Z",
+    "python": "ACCEPTED 2026-01-01T00:00:00.123456+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00.123456+00:00"
+  },
+  {
+    "input": "2026-01-01T01:00:00+01:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2025-12-31T19:00:00-05:00",
+    "python": "ACCEPTED 2026-01-01T00:00:00+00:00",
+    "json": "ACCEPTED 2026-01-01T00:00:00+00:00"
+  },
+  {
+    "input": "2026-01-01T00:00:00",
+    "python": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_",
+    "json": "ValidationError: Value error, naive datetime is not accepted; timezone information is required [type=value_"
+  },
+  {
+    "input": "Trade 1E-10 x 1E-10 = 1E-20",
+    "python": "ACCEPTED 1E-20"
+  }
+]
+# exit code: 0
+
+## Script: k2_probes.py
+"""Correction 2 probes: K1-01 and related timestamp text forms, plus the DEC-020 product case.
+
+Every timestamp candidate is validated through Instrument.listed_at on the Python path and
+the JSON path. SYNTHETIC data only.
+"""
+
+import json
+import sys
+
+from market_intelligence.core.models import DataQuality, Instrument, Trade
+
+sys.stdout.reconfigure(encoding="utf-8")  # type: ignore[union-attr]
+
+IK = dict(
+    exchange="BYBIT", symbol="BTCUSDT", market_type="USDT_LINEAR_PERPETUAL", base_asset="BTC",
+    quote_asset="USDT", status="TRADING", tick_size="0.10",
+)
+CANDIDATES = [
+    # K1-01 (audit 2) and exponent variants found in correction 2
+    ".5", "+.5", "-.5", ".5e3", ".5E+3", "-.5e-1",
+    # text forms outside the RFC 3339 profile
+    "2026-01-01 00:00:00+00:00", "2026-01-01T00:00:00z", "2026-01-01T00:00:00+0100",
+    "2026-01-01T00:00Z", "2026-01-01T00:00:00.123456789Z", "2026-01-01T24:00:00Z",
+    "2026-01-01T00:00:60Z", "20260101T000000Z", "2026-01-01",
+    # allowed RFC 3339 profile
+    "2026-01-01T00:00:00Z", "2026-01-01T00:00:00.5Z", "2026-01-01T00:00:00.123456Z",
+    "2026-01-01T01:00:00+01:00", "2025-12-31T19:00:00-05:00",
+    # naive (no offset)
+    "2026-01-01T00:00:00",
+]
+
+results = []
+for text in CANDIDATES:
+    row = {"input": text}
+    for mode in ("python", "json"):
+        try:
+            if mode == "python":
+                value = Instrument.model_validate(IK | {"listed_at": text}).listed_at
+            else:
+                value = Instrument.model_validate_json(json.dumps(IK | {"listed_at": text})).listed_at
+            row[mode] = "ACCEPTED " + value.isoformat()
+        except Exception as exc:  # noqa: BLE001 - probe records every outcome
+            row[mode] = f"{type(exc).__name__}: " + str(exc).splitlines()[2].strip()[:90]
+    results.append(row)
+
+trade = dict(
+    instrument=Instrument(**IK), trade_id="synthetic-k2", price="0.0000000001",
+    quantity="0.0000000001", value_usdt="0.00000000000000000001", aggressor_side="BUY",
+    executed_at="2026-01-05T12:00:00Z", received_at="2026-01-05T12:00:00Z", source="SYNTHETIC",
+    quality=DataQuality.valid(),
+)
+try:
+    product = str(Trade(**trade).value_usdt)
+    results.append({"input": "Trade 1E-10 x 1E-10 = 1E-20", "python": "ACCEPTED " + product})
+except Exception as exc:  # noqa: BLE001
+    results.append(
+        {"input": "Trade 1E-10 x 1E-10 = 1E-20", "python": "ValidationError: " + str(exc).splitlines()[2].strip()[:90]}
+    )
+
+print(json.dumps(results, indent=2, ensure_ascii=False))

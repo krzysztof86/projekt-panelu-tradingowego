@@ -58,13 +58,17 @@
 ### `core.models.types` — ISTNIEJE
 - Odpowiedzialność: typy pól z walidacją i dziedzina wartości Decimal.
 - Interfejs: `FiniteDecimal`, `PositiveDecimal`, `NonNegativeDecimal`, `UtcDatetime`,
-  `ExchangeSymbol`, `AssetCode`, `ReasonText`; stałe `MAX_DECIMAL_PLACES` (18), `MAX_INTEGER_DIGITS` (20).
-- Wejście: `Decimal|int|str` (liczby, ≤ 18 miejsc po przecinku, \|x\| < 1E+20), wyłącznie
-  `datetime|str ISO z przesunięciem` (czas). Wyjście: `Decimal`, `datetime` UTC.
+  `PositiveProductDecimal`, `ExchangeSymbol`, `AssetCode`, `ReasonText`; stałe `MAX_DECIMAL_PLACES` (18),
+  `MAX_PRODUCT_DECIMAL_PLACES` (36), `MAX_INTEGER_DIGITS` (20).
+- Wejście: `Decimal|int|str` (liczby, ≤ 18 miejsc po przecinku — iloczyn `value_usdt` ≤ 36,
+  \|x\| < 1E+20), wyłącznie `datetime` lub tekst w profilu RFC 3339 (czas, lista dozwolonych
+  zapisów `_RFC3339`). Wyjście: `Decimal`, `datetime` UTC.
 - Ograniczenia: tylko operacje Decimal niezależne od kontekstu.
 - Zależności: pydantic, `core.clock`. Testy: `tests/unit/test_primitives.py`,
   `tests/regression/test_audit1_phase0.py` (`TestA01FinancialDomain`, `TestA03TimestampInputTypes`,
-  `TestA06ReasonSingleLine`). Dokumentacja: DATA_CONTRACTS.md §1–§1.1, DEC-003, DEC-004, DEC-009, DEC-020.
+  `TestA06ReasonSingleLine`), `tests/regression/test_audit2_phase0.py` (`TestK101NumericText`,
+  `TestRfc3339Profile`, `TestDec020ProductDomain`). Dokumentacja: DATA_CONTRACTS.md §1–§1.3,
+  DEC-003, DEC-004, DEC-009, DEC-020.
 
 ### `core.models.enums` — ISTNIEJE
 - Interfejs: `Exchange`, `MarketType`, `ContractStatus`, `DataSource`, `DataQualityStatus`,
@@ -129,5 +133,5 @@ Tylko `__init__.py`. Przeznaczenie (PLANOWANE): cykl życia i historia `MarketEv
 | `tests/conftest.py` | syntetyczne fixture'y |
 | `tests/unit/` | testy modeli i prymitywów |
 | `tests/contracts/` | serializacja, schemat, fixture'y, import, granice `core` (I/O), odnośniki dokumentacji |
-| `tests/regression/` | testy regresji ustaleń audytów (`test_audit1_phase0.py`: A-01–A-07, E-1–E-4) |
+| `tests/regression/` | testy regresji ustaleń audytów (`test_audit1_phase0.py`: A-01–A-07, E-1–E-4; `test_audit2_phase0.py`: K1-01, profil RFC 3339, dziedzina iloczynu) |
 | `tests/fixtures/synthetic_contract_samples.json` | syntetyczne rekordy JSON |

@@ -1,0 +1,73 @@
+# Audit 1 probe script (reports/phase0/audyt1/AUDYT_FAZY0_PROBY.py.txt) run unchanged on correction 2
+$ python -I AUDYT_FAZY0_PROBY.py
+[
+  {
+    "probe": "rounded_wrong_trade_accepted",
+    "exception": "ValidationError",
+    "message": "1 validation error for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further in"
+  },
+  {
+    "probe": "exact_trade_rejected",
+    "exception": "ValidationError",
+    "message": "2 validation errors for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further i"
+  },
+  {
+    "probe": "same_payload_with_ROUND_UP",
+    "exception": "ValidationError",
+    "message": "1 validation error for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further in"
+  },
+  {
+    "probe": "same_payload_with_Inexact_trap",
+    "exception": "ValidationError",
+    "message": "1 validation error for Trade\nprice\n  Value error, at most 18 digits after the decimal point are allowed (including trailing zeros) [type=value_error, input_value='1.0000000000000000000000...00000000000000000000001', input_type=str]\n    For further in"
+  },
+  {
+    "probe": "large_exponent_exact_trade",
+    "exception": "ValidationError",
+    "message": "2 validation errors for Trade\nprice\n  Value error, absolute value must be below 1E+20 [type=value_error, input_value='1e999999', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error\nvalue_usdt\n  Value error"
+  },
+  {
+    "probe": "carriage_return_reason",
+    "exception": "ValidationError",
+    "message": "1 validation error for DataQuality\nreason\n  Value error, must be a single line; line separators are not allowed [type=value_error, input_value='first\\rsecond', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.14/v/value"
+  },
+  {
+    "probe": "schema_version_true",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=True, input_type=bool]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "schema_version_float_one",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=1.0, input_type=float]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "json_schema_version_true",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=True, input_type=bool]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "json_schema_version_float_one",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\nschema_version\n  Value error, schema_version must be an integer; bool, float, Decimal and str are not accepted [type=value_error, input_value=1.0, input_type=float]\n    For further information visit https://errors.py"
+  },
+  {
+    "probe": "numeric_timestamp_bytes",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\n  Value error, field 'listed_at': binary input is not accepted; decode it explicitly [type=value_error, input_value={'exchange': 'BYBIT', 'sy...sted_at': b'1767225600'}, input_type=dict]\n    For further information v"
+  },
+  {
+    "probe": "instrument_metadata_change",
+    "result": {
+      "same_id": true,
+      "equal": false,
+      "set_size": 2
+    }
+  },
+  {
+    "probe": "unchecked_copy_accepted_nested",
+    "exception": "ValidationError",
+    "message": "1 validation error for Instrument\ntick_size\n  Value error, value must be greater than zero [type=value_error, input_value=Decimal('-1'), input_type=Decimal]\n    For further information visit https://errors.pydantic.dev/2.14/v/value_error"
+  }
+]
+# exit code: 0

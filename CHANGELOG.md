@@ -5,6 +5,29 @@ Format: [Keep a Changelog](https://keepachangelog.com/pl/1.1.0/). Wersje pakietu
 
 ## [Unreleased]
 
+## [0.0.2] — 2026-10-22 — FAZA 0, korekta 2 (po audycie 2)
+Schemat i pakiet bez zmiany numeru (DEC-026: schemat fazy nieprzyjętej). Ustalenia audytu:
+`reports/phase0/audyt2/`; raport korekty: `reports/phase0/korekta2/`; decyzje użytkownika:
+`docs/requirements/FAZA0_KOREKTA2_DECYZJE.md`.
+
+### Naprawiono
+- K1-01: tekst epoch bez części całkowitej (`.5`, `+.5`, `-.5`) i warianty wykładnicze (`.5e3`)
+  nie są już interpretowane jako czas.
+- Ciche obcinanie ułamka sekundy poniżej mikrosekundy (np. 9 cyfr) — tekst jest odrzucany.
+
+### Zmieniono
+- Pola czasu: tekst sprawdzany listą dozwolonych zapisów — profil RFC 3339
+  `YYYY-MM-DDTHH:MM:SS[.ffffff](Z|+HH:MM|-HH:MM)` (DEC-004); odrzucane m.in. spacja zamiast `T`,
+  małe `z`, `+0100`, czas bez sekund, godzina 24.
+- `Trade.value_usdt`: dziedzina iloczynu do 36 miejsc po przecinku (`PositiveProductDecimal`,
+  DEC-020) — iloczyn każdej pary poprawnych czynników < 1E+20 jest reprezentowalny.
+- Statusy decyzji DEC-004, 005, 010, 020, 021, 022 → ACCEPTED; nowa DEC-026 (ACCEPTED).
+- Dokumentacja dziedziny Decimal bez twierdzeń o pokryciu danych giełdowych; opis
+  niezmiennika czasu `MarketEvent` w kodzie zgodny z dokumentacją.
+
+### Dodano
+- `tests/regression/test_audit2_phase0.py`; kopia audytu 2 w `reports/phase0/audyt2/`.
+
 ## [0.0.2] — 2026-10-22 — FAZA 0, korekta 1 (po audycie 1)
 Schemat danych w wersji **2** (niekompatybilny z 1 — zaostrzenie walidacji, DEC-022).
 Ustalenia audytu: `reports/phase0/audyt1/`; raport korekty: `reports/phase0/korekta1/`.

@@ -1,0 +1,5 @@
+# date: 2026-10-22T19:07:47Z
+# shell: Git Bash, branch task/faza0-korekta2, PYTHONOPTIMIZE unset for this process
+$ ./.venv/Scripts/python.exe -m mypy
+Success: no issues found in 31 source files
+# exit code: 0

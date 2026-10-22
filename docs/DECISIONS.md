@@ -8,27 +8,30 @@ ACCEPTED wymaga decyzji użytkownika i wpisu daty. Rekomendacja audytora **nie**
 Źródło „wymagania FAZY 0”: [requirements/FAZA0_SPECYFIKACJA.md](requirements/FAZA0_SPECYFIKACJA.md).
 Audyt 1 FAZY 0: [reports/phase0/audyt1/AUDYT_FAZY0.md](../reports/phase0/audyt1/AUDYT_FAZY0.md)
 (usterki A-01–A-07, rekomendacje §6). Korekta 1: [reports/phase0/korekta1/](../reports/phase0/korekta1/).
+Audyt 2: [reports/phase0/audyt2/AUDYT_FAZY0_KOREKTA1.md](../reports/phase0/audyt2/AUDYT_FAZY0_KOREKTA1.md)
+(K1-01, §9). Korekta 2: [reports/phase0/korekta2/](../reports/phase0/korekta2/). Decyzje użytkownika
+z korekty 2: [requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md).
 
 ## Decyzje wymagające rozstrzygnięcia użytkownika
 
-Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wpływu na kontrakty:
+**Rozstrzygnięte 2026-10-22 (korekta 2, ACCEPTED):** DEC-004, DEC-005, DEC-010, DEC-020 (wariant
+rozdzielonych dziedzin), DEC-021, DEC-022 oraz nowa DEC-026 — warunki 2 i 3 audytu 2 w zakresie
+decyzji wpływających na kontrakt.
+
+Nadal **PROPOSED** (kolejność według wpływu na kontrakty):
 
 | Priorytet | Decyzja | Pytanie do użytkownika | Rekomendacja audytu 1 |
 |---|---|---|---|
-| 1 | DEC-020 | Czy przyjąć dziedzinę Decimal: ≤ 18 miejsc po przecinku, \|x\| < 1E+20? | (nowa — brak; audyt wymagał jawnych granic albo dokładności w całej dziedzinie) |
-| 2 | DEC-010 | Czy przyjąć ścisłą równość `value_usdt == price * quantity` (w dziedzinie DEC-020)? | Odrzucić „dokładnie” w poprzednim wykonaniu; wymaga A-01 i zatwierdzenia dziedziny |
-| 3 | DEC-022 | Czy przyjąć podniesienie schematu do wersji 2 (alternatywa: zachować 1 jako niewydany)? | (nowa) |
-| 4 | DEC-005 | Niemutowalność, `extra="forbid"`, ścisły znacznik wersji | Przyjąć po A-02 i opisie granic A-07 |
-| 5 | DEC-021 | Ścieżki tworzenia rekordów, rewalidacja zagnieżdżonych, zakaz `model_construct` | (nowa — realizuje A-07) |
-| 6 | DEC-004 | Tylko `datetime`/`str` dla czasu, odrzucanie epoch i danych binarnych | Przyjąć po A-03 |
-| 7 | DEC-003 | `Decimal` bez `float`/`bool` | Przyjąć kierunek |
-| 8 | DEC-006 | Tożsamość przez `instrument_id`, równość = snapshot | Przyjąć z doprecyzowaniem (wykonane) |
-| 9 | DEC-007 | Wyrównanie świec do epoki Unix | `[start,end)` i długość sensowne; wyrównanie — założenie do potwierdzenia |
-| 10 | DEC-012 | Znormalizowane statusy kontraktu | Nie zatwierdzać jeszcze mapowania; potrzebna tabela i obsługa nieznanych statusów |
-| 11 | DEC-002 | Wsparcie wyłącznie Pythona 3.14 | Warunkowo; potwierdzić zgodność GUI przed fazą GUI |
-| 12 | DEC-008, DEC-009, DEC-011, DEC-013, DEC-015 | Rezerwacja pakietów, przyczyna jakości, niezmienniki zdarzenia, źródła, ID zdarzenia | Przyjąć jako niezmienniki rekordu (bez deklaracji kompletnego replay/no-look-ahead) |
-| 13 | DEC-016, DEC-018, DEC-019 | Przypinanie zależności, `PYTHONOPTIMIZE` per sesja, LF | Przyjąć (DEC-016 z określeniem zakresu odtwarzalności) |
-| 14 | DEC-023, DEC-024, DEC-025 | Zakres kontroli braku I/O, dokumenty wymagań i audytów w repo, test odnośników | (nowe) |
+| 1 | DEC-003 | `Decimal` bez `float`/`bool` | Przyjąć kierunek |
+| 2 | DEC-006 | Tożsamość przez `instrument_id`, równość = snapshot | Przyjąć z doprecyzowaniem (wykonane) |
+| 3 | DEC-009 | Przyczyna wymagana dla jakości ≠ VALID; `ReasonText` jednoliniowy | Przyjąć; poprawić A-06 (wykonane) |
+| 4 | DEC-011 | Niezmienniki pojedynczego `MarketEvent` | Przyjąć jako niezmienniki rekordu |
+| 5 | DEC-007 | Wyrównanie świec do epoki Unix | `[start,end)` i długość sensowne; wyrównanie — założenie do potwierdzenia |
+| 6 | DEC-012 | Znormalizowane statusy kontraktu | Nie zatwierdzać jeszcze mapowania; potrzebna tabela i obsługa nieznanych statusów |
+| 7 | DEC-002 | Wsparcie wyłącznie Pythona 3.14 | Warunkowo; potwierdzić zgodność GUI przed fazą GUI |
+| 8 | DEC-008, DEC-013, DEC-015 | Rezerwacja pakietów, źródła danych, ID zdarzenia | Przyjąć (bez deklaracji kompletnego replay) |
+| 9 | DEC-016, DEC-018, DEC-019 | Przypinanie zależności, `PYTHONOPTIMIZE` per sesja, LF | Przyjąć (DEC-016 z określeniem zakresu odtwarzalności) |
+| 10 | DEC-023, DEC-024, DEC-025 | Zakres kontroli braku I/O, dokumenty wymagań i audytów w repo, test odnośników | (brak; audyt 2: kontrole przydatne, ograniczone, nie są blokerem) |
 
 ## Rejestr decyzji
 
@@ -58,27 +61,30 @@ Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wp�
 - Konsekwencje: konektory muszą przekazywać tekst z API bez konwersji przez `float`.
 
 ### DEC-004 — Czas i typy wejścia
-- Data: 2026-10-22, rozszerzona w korekcie 1 · Status: **PROPOSED** (UTC i odrzucanie czasu naiwnego — ACCEPTED jako wymaganie §6)
-- Problem: niejednoznaczność stref i jednostek czasu; obejście zakazu epoch przez `bytes` (A-03).
-- Decyzja: pola czasu przyjmują **wyłącznie** świadome `datetime` lub `str` ISO 8601 z
-  przesunięciem; normalizacja do UTC; odrzucanie liczb, tekstów numerycznych, `date`, `time`
-  i innych typów. Dane binarne (`bytes`, `bytearray`, `memoryview`) są odrzucane w każdym polu
-  każdego kontraktu (walidator modelu bazowego).
-- Uzasadnienie: jednostki epoch musiałyby być zgadywane — wymagania zabraniają założeń.
-  Odrzucanie danych binarnych w jednym miejscu zamyka całą klasę obejść (czas, liczby, teksty,
-  enumy — luki E-1–E-3 z korekty 1), zamiast łatać pola pojedynczo.
-- Konsekwencje: konwersja epoch → `datetime` i dekodowanie bajtów w konektorach, jawnie.
+- Data: 2026-10-22, rozszerzona w korektach 1 i 2 · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md))
+- Problem: niejednoznaczność stref i jednostek czasu; obejście zakazu epoch przez `bytes` (A-03)
+  i przez tekst bez części całkowitej, np. `".5"` (K1-01, audyt 2).
+- Decyzja: pola czasu przyjmują **wyłącznie** świadome `datetime` albo tekst w profilu RFC 3339
+  `YYYY-MM-DDTHH:MM:SS[.ffffff](Z|+HH:MM|-HH:MM)` (szczegóły: DATA_CONTRACTS §1.3), sprawdzany
+  listą dozwolonych zapisów przed parsowaniem; normalizacja do UTC; odrzucanie liczb, tekstów
+  numerycznych, każdego innego zapisu tekstowego, `date`, `time` i innych typów. Dane binarne
+  (`bytes`, `bytearray`, `memoryview`) są odrzucane w każdym polu każdego kontraktu.
+- Uzasadnienie: jednostki epoch musiałyby być zgadywane — wymagania zabraniają założeń. Czarna
+  lista formatów okazała się niekompletna (K1-01); lista dozwolonych zapisów wyklucza każdy zapis,
+  którego kontrakt nie deklaruje, w tym ciche obcinanie ułamka poniżej mikrosekundy.
+- Konsekwencje: konwersja epoch → `datetime` i dekodowanie bajtów w konektorach, jawnie; teksty z
+  innych źródeł (spacja zamiast `T`, `+0100`, bez sekund) wymagają jawnej normalizacji przed kontraktem.
 
 ### DEC-005 — Niemutowalność, nieznane pola, wersjonowanie schematu
-- Data: 2026-10-22, zmieniona w korekcie 1 · Status: **PROPOSED**
+- Data: 2026-10-22, zmieniona w korekcie 1 · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md))
 - Decyzja: `frozen=True`, `extra="forbid"`; `schema_version` w rekordach najwyższego poziomu
   (Instrument, MarketTick, Candle, Trade, MarketEvent) jako **liczba całkowita** — `bool`,
   `float`, `Decimal`, `str` odrzucane na ścieżce Python i JSON (A-02); obiekty wartości
   (`DataQuality`, `MetricValue`) bez własnej wersji. Ścieżki tworzenia rekordów: DEC-021.
 - Uzasadnienie: wymagania (niemutowalność, wersjonowanie); wykrywanie literówek i danych z
   innego schematu; znacznik wersji nie może być wynikiem koercji typu.
-- Konsekwencje: każda niekompatybilna zmiana kontraktu podnosi `SCHEMA_VERSION` (DEC-022);
-  strategia migracji danych zapisanych w SQLite — do ustalenia przy module storage.
+- Konsekwencje: zasady podnoszenia `SCHEMA_VERSION`: DEC-022 i DEC-026; strategia migracji danych
+  zapisanych w SQLite — do ustalenia przy module storage.
 
 ### DEC-006 — Tożsamość instrumentu
 - Data: 2026-10-22, doprecyzowana w korekcie 1 · Status: **PROPOSED**
@@ -115,19 +121,20 @@ Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wp�
 - Uzasadnienie: stan zdegradowany zawsze wyjaśniony; tekst jednoliniowy bezpieczny dla logów i GUI.
 
 ### DEC-010 — Wartość transakcji
-- Data: 2026-10-22, zmieniona w korekcie 1 · Status: **PROPOSED**
+- Data: 2026-10-22, zmieniona w korekcie 1 · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md))
 - Problem (A-01): poprzednie wykonanie (`localcontext(prec=100)`) nie zapewniało dokładności dla
   danych o więcej niż 100 cyfrach i dziedziczyło zaokrąglanie, pułapki i zakres wykładników z
   kontekstu wywołującego (wycieki `decimal.Inexact`, `decimal.Overflow`).
-- Decyzja: `Trade.value_usdt` musi być równe `price * quantity` dokładnie. Iloczyn liczony w
-  prywatnym kontekście o precyzji = suma liczby cyfr czynników (iloczyn n- i m-cyfrowy ma ≤ n+m
-  cyfr, więc nie ma zaokrąglenia), z pełnym zakresem wykładników i wszystkimi pułapkami;
-  kontekst wywołującego nie jest używany ani zmieniany. Każdy błąd arytmetyki → `ValidationError`.
-  Dodatkowo dane wejściowe są ograniczone dziedziną DEC-020.
+- Decyzja: `Trade.value_usdt` musi być równe `price * quantity` **dokładnie, bez tolerancji**.
+  Iloczyn liczony w prywatnym kontekście o precyzji = suma liczby cyfr czynników (iloczyn n- i
+  m-cyfrowy ma ≤ n+m cyfr, więc nie ma zaokrąglenia), z pełnym zakresem wykładników i wszystkimi
+  pułapkami; kontekst wywołującego nie jest używany ani zmieniany. Każdy błąd arytmetyki →
+  `ValidationError`. Dziedziny czynników i iloczynu: DEC-020.
 - Uzasadnienie: dla kontraktu liniowego USDT wartość = cena × ilość aktywa bazowego; reguła musi
   dawać ten sam wynik dla tego samego rekordu w każdym środowisku.
-- Konsekwencje: konektor wylicza wartość sam; zaokrąglona wartość z giełdy zostałaby odrzucona;
-  iloczyn wymagający > 18 miejsc po przecinku nie ma poprawnej wartości (DEC-020).
+- Konsekwencje: konektor wylicza wartość sam. Jeśli źródło podaje wartość zaokrągloną, nie wolno
+  wprowadzać ukrytej tolerancji — trzeba ją zapisać osobno albo jawnie określić sposób uzyskania
+  `value_usdt` (zalecenie audytu 2, §5).
 
 ### DEC-011 — Niezmienniki MarketEvent
 - Data: 2026-10-22 · Status: **PROPOSED**
@@ -187,24 +194,25 @@ Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wp�
 - Decyzja: `.gitattributes` z `* text=auto eol=lf`.
 
 ### DEC-020 — Dziedzina wartości Decimal
-- Data: 2026-10-22 (korekta 1) · Status: **PROPOSED**
-- Problem (A-01): kontrakt dopuszczał dowolną liczbę cyfr i dowolne wykładniki, więc żadna stała
-  precyzja nie zapewniała poprawnych obliczeń, a skrajne wartości (np. `1e999999`) nie miały
-  sensu rynkowego. Audyt wymagał jawnych granic albo dokładności w całej dziedzinie — korekta
-  realizuje **oba** warunki (DEC-010 jest dokładne niezależnie od granic).
-- Decyzja: każde pole `Decimal` w kontraktach: najwyżej 18 cyfr po przecinku (z zerami
-  końcowymi), wartość bezwzględna < 1E+20; stałe `MAX_DECIMAL_PLACES`, `MAX_INTEGER_DIGITS`.
-- Uzasadnienie: 18 miejsc = najmniejsza jednostka typowych tokenów (1 wei = 1E-18 ETH); kroki
-  ceny i ilości kontraktów USDT perpetual mają kilka–kilkanaście miejsc; 1E+20 USDT o rzędy
-  wielkości przekracza każdy obrót; 38 cyfr = maksymalna precyzja DECIMAL w popularnych bazach SQL.
+- Data: 2026-10-22 (korekta 1), zmieniona w korekcie 2 · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md)), wariant
+  „Rozdzielić dziedziny”
+- Problem (A-01): kontrakt dopuszczał dowolną liczbę cyfr i dowolne wykładniki. Audyt 2 (§5):
+  wspólne 18 miejsc dla czynników i iloczynu odrzucało iloczyny poprawnych czynników
+  (`1E-10 × 1E-10 = 1E-20`).
+- Decyzja: dwie dziedziny z jawnymi granicami — czynniki i wartości proste (ceny, ilości,
+  `tick_size`, obrót, OHLC, metryki): ≤ 18 miejsc po przecinku, \|x\| < 1E+20; iloczyn
+  (`Trade.value_usdt`): ≤ 36 miejsc, \|x\| < 1E+20. Miejsca liczone z reprezentacji wejściowej
+  (z zerami końcowymi). Stałe `MAX_DECIMAL_PLACES`, `MAX_PRODUCT_DECIMAL_PLACES`, `MAX_INTEGER_DIGITS`.
+- Uzasadnienie: dziedzina iloczynu jest iloczynem dziedzin czynników, więc każda para poprawnych
+  czynników o iloczynie < 1E+20 ma reprezentowalną wartość. Granice czynników są założeniem
+  projektowym (kroki ceny/ilości kontraktów USDT perpetual, 1 wei = 1E-18), **nie** dowodem pokrycia
+  danych giełdowych.
 - Konsekwencje: wartości spoza dziedziny → jawny `ValidationError` (nic nie jest zaokrąglane);
-  `Trade` z iloczynem wymagającym > 18 miejsc jest odrzucany; przyszłe detektory muszą
-  kwantyzować wartości metryk do 18 miejsc; zgodność z rzeczywistymi danymi giełd — OQ-14.
-- Alternatywy: (a) brak granic + dokładna arytmetyka (dopuszcza wartości bez sensu rynkowego);
-  (b) inne granice, np. 28 miejsc; (c) osobna, szersza dziedzina dla `MetricValue`.
+  przyszłe detektory muszą kwantyzować wartości metryk do 18 miejsc; zgodność z rzeczywistymi
+  formatami Bybit/Binance — OQ-14 (otwarte).
 
 ### DEC-021 — Bezpieczne tworzenie i zmiana rekordów
-- Data: 2026-10-22 (korekta 1) · Status: **PROPOSED**
+- Data: 2026-10-22 (korekta 1) · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md))
 - Problem (A-07): `model_copy(update=...)` i `model_construct` tworzyły rekordy bez walidacji,
   a zagnieżdżone instancje nie były ponownie walidowane.
 - Decyzja: `ContractModel.replace(**zmiany)` — nowy rekord z pełną walidacją;
@@ -212,20 +220,18 @@ Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wp�
   `revalidate_instances="always"` — każdy zagnieżdżony kontrakt jest walidowany ponownie;
   `model_construct` zakazany w `src/` (test AST), dopuszczalny tylko w testach.
 - Uzasadnienie: jedna, zawsze walidowana ścieżka dla danych niezaufanych; `frozen` nie jest
-  granicą bezpieczeństwa.
-- Konsekwencje: koszt ponownej walidacji zagnieżdżonych rekordów (do oceny przy strumieniach
-  transakcji; możliwa zmiana polityki tylko decyzją).
+  granicą bezpieczeństwa. `model_copy()` bez aktualizacji kopiuje zaufany, ważny rekord i nie jest
+  walidatorem instancji uszkodzonej obejściem API.
+- Konsekwencje: koszt ponownej walidacji zagnieżdżonych rekordów — pomiar przed modułem wymagającym
+  przepustowości strumienia (OQ-15).
 
 ### DEC-022 — Schemat danych w wersji 2, pakiet 0.0.2
-- Data: 2026-10-22 (korekta 1) · Status: **PROPOSED**
-- Problem: korekta zaostrza walidację (DEC-004, DEC-005, DEC-009, DEC-020, DEC-021); procedura
-  DEVELOPMENT.md §8.1 wymaga wtedy podniesienia `SCHEMA_VERSION`.
+- Data: 2026-10-22 (korekta 1) · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md))
+- Problem: korekta 1 zaostrzyła walidację; procedura DEVELOPMENT.md §8.1 wymagała wtedy
+  podniesienia `SCHEMA_VERSION`.
 - Decyzja: `SCHEMA_VERSION = 2`; rekordy z `schema_version = 1` są odrzucane; wersja pakietu 0.0.2.
-- Uzasadnienie: zgodność z własną procedurą wersjonowania; jednoznaczne odróżnienie rekordów
-  sprzed i po korekcie.
 - Konsekwencje: schemat 1 nie był przyjęty ani zapisywany poza fixture'ami (brak migracji).
-- Alternatywa: zachować wersję 1 jako niewydaną i uznać korektę za część jej definicji
-  (wymaga wyjątku od procedury §8.1 — decyzja użytkownika).
+  Dalsze zaostrzenia przed odbiorem FAZY 0 (korekta 2) nie podnoszą wersji — DEC-026.
 
 ### DEC-023 — Zakres gwarancji „brak I/O w core”
 - Data: 2026-10-22 (korekta 1) · Status: **PROPOSED**
@@ -253,6 +259,16 @@ Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wp�
   audytów zewnętrznych).
 - Uzasadnienie: rekomendacja audytu (jednorazowy skrypt nie był narzędziem repozytorium).
 
+### DEC-026 — Wersja schematu w fazie nieprzyjętej
+- Data: 2026-10-22 (korekta 2) · Status: **ACCEPTED** — zatwierdzona przez użytkownika 2026-10-22 ([requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md)), wariant „Zostaw 2 + polityka”
+- Problem: korekta 2 zaostrza walidację czasu i zmienia dziedzinę `value_usdt`; procedura §8.1
+  wymaga podbicia wersji albo jawnego wyjątku (audyt 2, §8).
+- Decyzja: schemat fazy **nieprzyjętej** (niewydany, bez trwale zapisanych danych) można korygować
+  bez podnoszenia `SCHEMA_VERSION`; podniesienie obowiązuje po odbiorze fazy albo po pierwszym
+  trwałym zapisie danych (np. w SQLite). Korekta 2 zachowuje schemat 2 i pakiet 0.0.2.
+- Konsekwencje: rekord ze `schema_version = 2` sprzed korekty 2 może nie przejść walidacji po
+  korekcie (dotyczy wyłącznie fixture'ów testowych). Procedura: DEVELOPMENT.md §8.1.
+
 ## Otwarte kwestie
 | ID | Kwestia | Wpływ |
 |---|---|---|
@@ -269,5 +285,5 @@ Wszystkie decyzje PROPOSED czekają na rozstrzygnięcie. Kolejność według wp�
 | OQ-11 | `MarketEvent` przez `instrument_id` (tekst) vs osadzony `Instrument` | Kontrakt MarketEvent, storage |
 | OQ-12 | Treść dokumentacji Binance niezweryfikowana (2026-10-22: HTTP 202 u autora; w audycie przekierowanie na treść ogólną) | EXCHANGE_API.md |
 | OQ-13 | Czy zmienna systemowa `PYTHONOPTIMIZE=2` na komputerze deweloperskim ma zostać (decyzja właściciela komputera) | Środowisko |
-| OQ-14 | Czy dziedzina DEC-020 obejmuje wszystkie rzeczywiste ceny, ilości i iloczyny z Bybit/Binance (sprawdzić na udokumentowanych formatach przed konektorami) | Konektory, Trade |
+| OQ-14 | Czy dziedzina DEC-020 (czynniki ≤ 18 miejsc, iloczyn ≤ 36 miejsc, \|x\| < 1E+20) obejmuje wszystkie rzeczywiste ceny, ilości i obroty z Bybit/Binance (sprawdzić na udokumentowanych formatach przed konektorami) | Konektory, Trade |
 | OQ-15 | Wydajność `revalidate_instances="always"` przy strumieniach transakcji (DEC-021) | Konektory, replay |

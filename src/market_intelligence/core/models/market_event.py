@@ -35,7 +35,8 @@ class MarketEvent(VersionedContractModel):
     """Detected market anomaly.
 
     Invariants (DEC-011):
-    - ``window_start < window_end <= detected_at`` (no detection from future data);
+    - ``window_start < window_end <= detected_at`` (ordering of the declared times only; it
+      does not prove that a detector used no future data);
     - ``rejection_reason`` is present if and only if ``status`` is ``REJECTED``;
     - ``VERIFIED`` requires ``quality`` to be ``VALID``.
 

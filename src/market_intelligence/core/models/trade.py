@@ -24,7 +24,11 @@ from market_intelligence.core.models.base import VersionedContractModel
 from market_intelligence.core.models.data_quality import DataQuality
 from market_intelligence.core.models.enums import AggressorSide, DataSource
 from market_intelligence.core.models.instrument import Instrument
-from market_intelligence.core.models.types import PositiveDecimal, UtcDatetime
+from market_intelligence.core.models.types import (
+    PositiveDecimal,
+    PositiveProductDecimal,
+    UtcDatetime,
+)
 
 TradeId = Annotated[str, Field(pattern=r"^\S{1,128}$")]
 """Exchange-native trade identifier, preserved verbatim."""
@@ -70,14 +74,16 @@ class Trade(VersionedContractModel):
 
     ``quantity`` is in units of the base asset. For a linear USDT contract the value in
     USDT is exactly ``price * quantity``; the contract enforces that equality with exact
-    arithmetic that does not depend on the active decimal context (DEC-010).
+    arithmetic that does not depend on the active decimal context (DEC-010). ``value_usdt``
+    allows up to 36 decimal places, so the product of any two domain values below 1E+20 is
+    representable (DEC-020).
     """
 
     instrument: Instrument
     trade_id: TradeId
     price: PositiveDecimal
     quantity: PositiveDecimal
-    value_usdt: PositiveDecimal
+    value_usdt: PositiveProductDecimal
     aggressor_side: AggressorSide
     executed_at: UtcDatetime
     received_at: UtcDatetime

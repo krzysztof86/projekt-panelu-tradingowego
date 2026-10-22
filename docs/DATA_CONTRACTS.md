@@ -5,7 +5,8 @@ Kod: `src/market_intelligence/core/models/`. Import publiczny:
 
 Historia schematu: wersja 1 — FAZA 0 (commit `470eb03`), nieprzyjęta w audycie, nigdy nie
 zapisywana poza fixture'ami testowymi; wersja 2 — korekta 1 FAZY 0 (zaostrzenie walidacji,
-DEC-022). Zmiany: [CHANGELOG.md](../CHANGELOG.md).
+DEC-022); korekta 2 (profil RFC 3339, dziedzina iloczynu) zmienia schemat 2 bez podnoszenia
+wersji, bo FAZA 0 nie jest przyjęta (DEC-026). Zmiany: [CHANGELOG.md](../CHANGELOG.md).
 
 ## 1. Zasady wspólne
 | Zasada | Realizacja | Decyzja |
@@ -15,33 +16,44 @@ DEC-022). Zmiany: [CHANGELOG.md](../CHANGELOG.md).
 | Wersja schematu | `schema_version` = liczba całkowita `2` w `Instrument`, `MarketTick`, `Candle`, `Trade`, `MarketEvent`. **Odrzucane**: inne wartości oraz `bool`, `float` (także `2.0`), `Decimal`, `str` — w danych Python i JSON. `DataQuality` i `MetricValue` są obiektami wartości wersjonowanymi przez rekord nadrzędny | DEC-005, DEC-022 |
 | Wartości finansowe | `Decimal`. Wejście: `Decimal`, `int` lub `str`. **Odrzucane**: `float`, `bool`, NaN, ±Infinity (także jako tekst) i wartości spoza dziedziny (§1.1) | DEC-003, DEC-020 |
 | Arytmetyka | Jedyne obliczenie w kontraktach (`Trade`: `price * quantity`) jest dokładne i **niezależne od aktywnego kontekstu `decimal`** (precyzja, zaokrąglanie, pułapki, zakres wykładników); błąd arytmetyki zgłaszany jako `ValidationError` | DEC-010 |
-| JSON | `Decimal` serializowany jako **string** (`"0.10"`), dokładna reprezentacja zachowana (także zera końcowe i wykładnik); czas jako ISO 8601 z `Z` | DEC-003 |
-| Czas | Wejście **wyłącznie** `datetime` ze strefą lub `str` ISO 8601 z przesunięciem; normalizacja do UTC. **Odrzucane**: czas naiwny, liczby (epoch s/ms), teksty numeryczne, `date`, `time` i każdy inny typ | DEC-004 |
+| JSON | `Decimal` serializowany jako **string** (`"0.10"`), dokładna reprezentacja zachowana (także zera końcowe i wykładnik); czas jako tekst w profilu RFC 3339 z `Z` (wiersz „Czas”) | DEC-003 |
+| Czas | Wejście **wyłącznie** `datetime` ze strefą lub `str` w profilu RFC 3339 (§1.3); normalizacja do UTC. **Odrzucane**: czas naiwny, liczby i teksty numeryczne (epoch w każdej postaci, także `.5`, `.5e3`), inne zapisy tekstowe, `date`, `time` i każdy inny typ | DEC-004 (ACCEPTED) |
 | Dane binarne | `bytes`, `bytearray`, `memoryview` są odrzucane w **każdym** polu każdego kontraktu; dekodowanie należy do wywołującego | DEC-004 |
 | Brak danych ≠ zero | Pola opcjonalne mają wartość `None` (brak informacji). Pola wymagane nie mają wartości domyślnych — brak pola → błąd; `0` jest wartością, nie brakiem | — |
 | Enumeracje | Wielkie litery, wewnętrzne identyfikatory. Pisownia giełdowa (np. `"Buy"`, `"Trading"`) jest odrzucana — mapuje ją konektor | DEC-012 |
 | Tworzenie zmienionego rekordu | §1.2 | DEC-021 |
 
-### 1.1 Dziedzina wartości `Decimal` (DEC-020)
-Każde pole `Decimal` w każdym kontrakcie (ceny, ilości, obrót, tick size, wartości metryk):
-- najwyżej **18 cyfr po przecinku**, liczone z reprezentacji wejściowej (także zera końcowe:
-  `"1.0000000000000000000"` jest odrzucane);
-- wartość bezwzględna **< 1E+20** (najwyżej 20 cyfr części całkowitej);
-- zatem najwyżej 38 cyfr znaczących (odpowiednik `DECIMAL(38, 18)`).
+### 1.1 Dziedzina wartości `Decimal` (DEC-020, ACCEPTED)
+Dwie dziedziny, obie z jawnymi granicami (decyzja użytkownika:
+[requirements/FAZA0_KOREKTA2_DECYZJE.md](requirements/FAZA0_KOREKTA2_DECYZJE.md)):
 
-Uzasadnienie granic: 18 miejsc to najmniejsza jednostka typowych tokenów (np. 1 wei = 1E-18
-ETH) — żadna kwota kryptowalutowa nie wymaga więcej; publiczne kontrakty USDT perpetual mają
-kroki ceny i ilości z kilkoma–kilkunastoma miejscami. 1E+20 USDT przekracza o rzędy wielkości
-każdy obrót rynkowy. 38 cyfr to maksymalna precyzja typu DECIMAL w popularnych bazach SQL.
-Granice są **jawne**: naruszenie daje `ValidationError` z komunikatem, nic nie jest zaokrąglane
-ani obcinane.
+| Dziedzina | Pola | Miejsca po przecinku | Wartość bezwzględna |
+|---|---|---|---|
+| czynniki i wartości proste | ceny, ilości, `tick_size`, `turnover_usdt`, `last_price`, OHLC, wartości metryk | ≤ **18** | < **1E+20** |
+| iloczyn | `Trade.value_usdt` | ≤ **36** | < **1E+20** |
 
-Konsekwencja dla `Trade`: jeśli dokładny iloczyn `price * quantity` wymaga więcej niż 18
-miejsc po przecinku (suma miejsc ceny i ilości > 18 po usunięciu zer końcowych) lub
-przekracza 1E+20, nie istnieje poprawna wartość `value_usdt` i rekord jest odrzucany.
-Wpływ na dane giełdowe — do potwierdzenia przy konektorach (OQ-03).
+- Miejsca po przecinku liczone są z **reprezentacji wejściowej**, łącznie z zerami końcowymi:
+  `"1.0000000000000000000"` (19 miejsc) jest odrzucane w dziedzinie czynników, choć liczbowo
+  równa się 1.
+- Opis „38 cyfr / `DECIMAL(38, 18)`” dotyczy wyłącznie **zakresu liczbowego** dziedziny czynników
+  (20 cyfr części całkowitej + 18 miejsc), nie semantyki reprezentacji: w odróżnieniu od typu SQL
+  kontrakt nie skaluje i nie dopełnia wartości, tylko odrzuca zapis z nadmiarowymi miejscami.
+- Granice są **jawne**: naruszenie daje `ValidationError` z komunikatem; nic nie jest zaokrąglane
+  ani obcinane.
 
-### 1.2 Tworzenie zmienionych rekordów (DEC-021)
+Uzasadnienie granic (założenia projektowe, **nie** dowód pokrycia danych giełdowych): kroki ceny i
+ilości publicznych kontraktów USDT perpetual mają kilka–kilkanaście miejsc po przecinku; 18 miejsc
+odpowiada najmniejszej jednostce typowych tokenów (np. 1 wei = 1E-18 ETH); 1E+20 USDT przekracza o
+rzędy wielkości każdy obrót rynkowy. Zgodność z rzeczywistymi formatami Bybit/Binance **nie jest
+zweryfikowana** — OQ-14.
+
+Konsekwencja dla `Trade`: czynniki mają najwyżej 18 miejsc, więc dokładny iloczyn ma najwyżej 36
+miejsc (po usunięciu zer końcowych często mniej). O reprezentowalności rozstrzyga **dokładny iloczyn**
+porównany z dziedziną `value_usdt`, nie suma skal czynników. W dziedzinie rozdzielonej każda para
+poprawnych czynników o iloczynie < 1E+20 ma reprezentowalną wartość `value_usdt` (np.
+`0.0000000001 × 0.0000000001 = 1E-20` jest przyjmowane); iloczyn ≥ 1E+20 jest odrzucany.
+
+### 1.2 Tworzenie zmienionych rekordów (DEC-021, ACCEPTED)
 | Ścieżka | Zachowanie |
 |---|---|
 | `Model(...)`, `model_validate`, `model_validate_json` | pełna walidacja (ścieżka dla danych niezaufanych) |
@@ -55,18 +67,38 @@ Wpływ na dane giełdowe — do potwierdzenia przy konektorach (OQ-03).
 Pythona może obejść każdą ochronę (np. `object.__setattr__`). Gwarancją jest walidacja na
 powyższych ścieżkach.
 
+### 1.3 Tekstowy zapis czasu (DEC-004, ACCEPTED)
+Tekst czasu jest sprawdzany **listą dozwolonych zapisów** (nie czarną listą) i dopiero potem
+parsowany; żaden inny parser nie interpretuje tekstu. Dozwolony jest wyłącznie profil RFC 3339:
+
+`YYYY-MM-DDTHH:MM:SS[.ffffff](Z|+HH:MM|-HH:MM)`
+
+- separator daty i czasu: wielka litera `T`; strefa: wielka litera `Z` albo przesunięcie z dwukropkiem;
+- sekundy wymagane; ułamek sekundy 1–6 cyfr (więcej cyfr jest odrzucane, aby nie obcinać po cichu
+  do mikrosekund);
+- godziny 00–23, minuty i sekundy 00–59 (sekunda przestępna `60` i godzina `24` są odrzucane —
+  `datetime` ich nie reprezentuje, a parser Pythona po cichu przesuwa `24:00` na następny dzień);
+- tylko cyfry ASCII; bez białych znaków na początku i końcu; data musi istnieć w kalendarzu;
+- tekst w tym profilu bez strefy jest odrzucany jako czas naiwny;
+- `-00:00` jest przyjmowane jako UTC.
+
+Kontrakty serializują czas dokładnie w tym profilu (zawsze z `Z`), więc wynik `model_dump_json()`
+jest poprawnym wejściem (test `test_contract_output_is_accepted_input`). Konwersja epoch (ms) →
+`datetime` należy do konektorów.
+
 Wspólne typy (`core/models/types.py`):
 | Typ | Znaczenie |
 |---|---|
 | `FiniteDecimal` | skończony `Decimal` w dziedzinie §1.1 (może być ujemny/zero) |
 | `PositiveDecimal` | jak wyżej, `> 0` |
 | `NonNegativeDecimal` | jak wyżej, `>= 0` |
-| `UtcDatetime` | świadomy strefy, znormalizowany do UTC; wejście tylko `datetime`/`str` |
+| `PositiveProductDecimal` | skończony `Decimal` w dziedzinie iloczynu §1.1 (≤ 36 miejsc), `> 0` — `Trade.value_usdt` |
+| `UtcDatetime` | świadomy strefy, znormalizowany do UTC; wejście tylko `datetime` lub tekst w profilu RFC 3339 (§1.3) |
 | `ExchangeSymbol` | 1–64 znaki bez białych znaków i `:`; zachowany dosłownie (bez zmiany wielkości liter) |
 | `AssetCode` | 1–32 znaki bez białych znaków i `:` |
 | `ReasonText` | 1–500 znaków, bez białych znaków na początku/końcu, **jedna linia**: zabronione separatory linii w rozumieniu `str.splitlines()` — LF, CR, CR LF, VT, FF, U+001C, U+001D, U+001E, U+0085, U+2028, U+2029. Tabulator wewnątrz tekstu jest dozwolony |
 
-Stałe: `MAX_DECIMAL_PLACES = 18`, `MAX_INTEGER_DIGITS = 20` (`core/models/types.py`).
+Stałe: `MAX_DECIMAL_PLACES = 18`, `MAX_PRODUCT_DECIMAL_PLACES = 36`, `MAX_INTEGER_DIGITS = 20` (`core/models/types.py`).
 
 ## 2. Enumeracje (`core/models/enums.py`)
 | Enum | Wartości |
@@ -153,7 +185,7 @@ Semantyka przedziału `[start, end)`: metoda `contains(moment)` zwraca `start <=
 | `trade_id` | `TradeId` (str) | identyfikator giełdowy | 1–128 znaków bez białych znaków; liczba (int) odrzucana — konektor przekazuje tekst |
 | `price` | `PositiveDecimal` | USDT za 1 jednostkę aktywa bazowego | `> 0` |
 | `quantity` | `PositiveDecimal` | jednostki aktywa bazowego | `> 0` |
-| `value_usdt` | `PositiveDecimal` | USDT | `== price * quantity` dokładnie, w całej dziedzinie §1.1, niezależnie od kontekstu `decimal` wywołującego (DEC-010) |
+| `value_usdt` | `PositiveProductDecimal` | USDT | `== price * quantity` dokładnie, bez tolerancji, niezależnie od kontekstu `decimal` wywołującego (DEC-010, ACCEPTED); dziedzina iloczynu §1.1 |
 | `aggressor_side` | `AggressorSide` | strona takera | `BUY` / `SELL` |
 | `executed_at` | `UtcDatetime` | czas wykonania (giełda) | wymagany |
 | `received_at` | `UtcDatetime` | czas odbioru | wymagany |

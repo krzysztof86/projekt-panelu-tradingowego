@@ -51,8 +51,8 @@ Poniższe punkty to **założenia do weryfikacji**, nie fakty potwierdzone dokum
 | `Instrument.symbol` | przekazać symbol dosłownie, bez zmiany wielkości liter |
 | `Instrument.status` | zmapować status giełdowy na `ContractStatus` (tabela mapowania: DEC-012, OQ-03) |
 | `Instrument.market_type` | odfiltrować wszystko poza USDT linear perpetual (Spot, COIN-M/inverse, USDC, kontrakty terminowe z datą) |
-| czasy | zamienić epoch (ms) na świadomy `datetime` UTC jawnie, po stronie konektora |
-| liczby | przekazywać wartości tekstowe z API jako `str`/`Decimal`, nigdy przez `float`; wartości muszą mieścić się w dziedzinie DEC-020 (≤ 18 miejsc po przecinku, \|x\| < 1E+20) — zgodność do sprawdzenia (OQ-14) |
+| czasy | zamienić epoch (ms) na świadomy `datetime` UTC jawnie, po stronie konektora; tekst czasu przekazywać tylko w profilu RFC 3339 (DATA_CONTRACTS §1.3) |
+| liczby | przekazywać wartości tekstowe z API jako `str`/`Decimal`, nigdy przez `float`; wartości muszą mieścić się w dziedzinie DEC-020 (czynniki ≤ 18 miejsc po przecinku, `value_usdt` ≤ 36, \|x\| < 1E+20) — zgodność do sprawdzenia (OQ-14) |
 | dane binarne | dekodować `bytes` jawnie przed utworzeniem kontraktu (kontrakty odrzucają dane binarne, DEC-004) |
 | `Trade.aggressor_side` | zmapować stronę takera na `BUY`/`SELL` (pola giełdowe do weryfikacji) |
 | `Trade.trade_id` | przekazać jako tekst |

@@ -31,6 +31,9 @@ MARKDOWN_FILES = sorted(
     if not EXCLUDED_PARTS & set(path.relative_to(ROOT).parts) and not _is_external_audit_copy(path)
 )
 LINK = re.compile(r"\[[^\]]*\]\(([^)\s]+)\)")
+FENCED_CODE = re.compile(r"^```.*?^```", re.MULTILINE | re.DOTALL)
+INLINE_CODE = re.compile(r"`[^`\n]*`")
+"""Markdown does not parse links inside code, so code is removed before the link search."""
 REPO_PATH = re.compile(r"`((?:src|docs|tests|reports|\.github)/[^`*<>\s]+)`")
 PACKAGE_PATH = re.compile(r"`(core/[^`*<>\s]+\.py)`")
 TOP_LEVEL_FILE = re.compile(
@@ -54,7 +57,7 @@ def test_markdown_files_found() -> None:
 
 @pytest.mark.parametrize("path", MARKDOWN_FILES, ids=_relative)
 def test_relative_links_resolve(path: Path) -> None:
-    text = path.read_text(encoding="utf-8")
+    text = INLINE_CODE.sub("", FENCED_CODE.sub("", path.read_text(encoding="utf-8")))
     for target in LINK.findall(text):
         if target.startswith(("http://", "https://", "mailto:")):
             continue

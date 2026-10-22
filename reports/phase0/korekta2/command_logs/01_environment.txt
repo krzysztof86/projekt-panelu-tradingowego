@@ -1,0 +1,14 @@
+# date: 2026-10-22T19:05:21Z
+# Correction 2 starting point and environment
+# Audited HEAD (audit 2): f0c36e9bfe6408a6228eae87a33c04d5afbee61e on task/faza0-korekta1; working tree clean before correction 2
+$ git branch --show-current
+task/faza0-korekta2
+$ git merge-base --is-ancestor f0c36e9 HEAD && echo ancestor
+ancestor
+$ python --version
+Python 3.14.5
+$ python -m pip --version
+pip 26.2.2 from <REPO>\.venv\Lib\site-packages\pip (python 3.14)
+
+$ pip freeze --exclude-editable vs requirements-dev.lock
+identical

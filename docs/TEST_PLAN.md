@@ -85,3 +85,15 @@ Plik: `tests/regression/test_audit1_phase0.py`. Ustalenia: `reports/phase0/audyt
 | E-2 | `TestA02SchemaVersion::test_decimal_marker_rejected` | `Decimal` jako znacznik wersji |
 | E-4 | `TestA06ReasonSingleLine` | separatory Unicode (U+0085, U+2028, U+2029, VT, FF, U+001C–U+001E) |
 | Rekomendacja §5 | `tests/contracts/test_documentation.py` | odnośniki względne, kotwice i ścieżki w backtickach we wszystkich `.md` |
+
+## 8. Regresje audytu 2 FAZY 0 (korekta 2)
+Plik: `tests/regression/test_audit2_phase0.py`. Ustalenia: `reports/phase0/audyt2/AUDYT_FAZY0_KOREKTA1.md`.
+
+| Ustalenie / decyzja | Klasa testów | Co sprawdza |
+|---|---|---|
+| K1-01 | `TestK101NumericText` | `.5`, `+.5`, `-.5` na ścieżce Python i JSON; warianty wykładnicze, ze znakiem, z białymi znakami; każde pole czasu w każdym modelu |
+| DEC-004 (profil RFC 3339) | `TestRfc3339Profile` | 25 zapisów spoza profilu (spacja, `t`/`z`, `+0100`, bez sekund, > 6 cyfr ułamka, godzina 24, sekunda 60, format podstawowy, data tygodniowa/porządkowa, białe znaki, cyfry spoza ASCII, nieistniejąca data) na obu ścieżkach; 8 zapisów dozwolonych z normalizacją do UTC; komunikat dla czasu naiwnego; wyjście `model_dump_json()` wszystkich modeli jest poprawnym wejściem |
+| DEC-020 (rozdzielone dziedziny) | `TestDec020ProductDomain` | przykład audytu `1E-10 × 1E-10`; iloczyn 36 miejsc; 37 miejsc odrzucone; limit wartości; czynniki nadal ≤ 18 miejsc; 300 losowych par czynników do 18 miejsc z wyrocznią `Fraction` |
+
+Test mutacyjny korekty 2 (16 cofnięć: 5 nowych i 11 z korekty 1):
+`reports/phase0/korekta2/command_logs/09_mutation_check.txt`.
